@@ -16,5 +16,17 @@ publish: true
 
 ## Metrics log
 
-- [lab3_metrics_log.csv](proof/lab3/lab3_metrics_log.csv)
-- [lab3_fetaures_plan.txt](proof/lab3/lab3_features_plan.txt)
+- [lab3_metrics_log.csv](lab3_metrics_log.csv)
+- [lab3_features_plan.txt](lab3_features_plan.txt)
+
+## Outputs
+
+- [preuve_1.png](preuve_1.png)
+- [preuve_2.png](preuve_2.png)
+- [preuve_3.png](preuve_3.png)
+- [preuve_4.png](preuve_4.png)
+
+- [comparaison.png](comparaison.png)
+- [coude.png](coude.png)
+- [cluster_2.png](cluster_2.png)
+- [cluster_5.png](cluster_5.png)
