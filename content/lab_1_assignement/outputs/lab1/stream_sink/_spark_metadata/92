@@ -1,0 +1,3 @@
+v1
+{"path":"file:///home/maxence/Documents/DE2_Data_Engineering/assignements/outputs/lab1/stream_sink/part-00000-d5965efa-7985-46d1-95df-cc03b2fb9820-c000.snappy.parquet","size":801,"isDir":false,"modificationTime":1778516230253,"blockReplication":1,"blockSize":33554432,"action":"add"}
+{"path":"file:///home/maxence/Documents/DE2_Data_Engineering/assignements/outputs/lab1/stream_sink/part-00003-08ad9652-cd18-42ab-b7dd-3996c46ebc7b-c000.snappy.parquet","size":2014,"isDir":false,"modificationTime":1778516230267,"blockReplication":1,"blockSize":33554432,"action":"add"}

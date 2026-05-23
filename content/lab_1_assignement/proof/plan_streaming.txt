@@ -1,0 +1,26 @@
+== Parsed Logical Plan ==
+'Project ['window.start AS window_start#227, 'window.end AS window_end#228, 'total_records, 'distinct_aircraft, 'round('avg_velocity_ms, 2) AS avg_velocity_ms#229, 'round('avg_baro_alt_m, 2) AS avg_baro_alt_m#230]
++- ~Aggregate [window#122-T120000ms], [window#122-T120000ms, count(icao24#3) AS total_records#6L, approx_count_distinct(icao24#3, 0.05, 0, 0) AS distinct_aircraft#7L, avg(velocity#4) AS avg_velocity_ms#8, avg(baroaltitude#5) AS avg_baro_alt_m#9]
+   +- ~Project [named_struct(start, knownnullable(precisetimestampconversion(((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - CASE WHEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) < cast(0 as bigint)) THEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) + 300000000) ELSE ((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) END) - 0), LongType, TimestampType)), end, knownnullable(precisetimestampconversion((((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - CASE WHEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) < cast(0 as bigint)) THEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) + 300000000) ELSE ((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) END) - 0) + 300000000), LongType, TimestampType))) AS window#122-T120000ms, event_time#2-T120000ms, icao24#3, velocity#4, baroaltitude#5]
+      +- ~Filter isnotnull(event_time#2-T120000ms)
+         +- ~EventTimeWatermark eeeef827-9bc4-4227-8cd7-b8f87c8802bc, event_time#2: timestamp, 2 minutes
+            +- ~Project [timestamp#0 AS event_time#2, cast((value#1L % cast(2000 as bigint)) as string) AS icao24#3, cast(((value#1L % cast(900 as bigint)) + cast(100 as bigint)) as double) AS velocity#4, cast(((value#1L % cast(10000 as bigint)) + cast(1000 as bigint)) as double) AS baroaltitude#5]
+               +- ~StreamingRelationV2 org.apache.spark.sql.execution.streaming.sources.RateStreamProvider@45b021bd, rate, org.apache.spark.sql.execution.streaming.sources.RateStreamTable@2575a0eb, [rowsPerSecond=500], [timestamp#0, value#1L]
+
+== Analyzed Logical Plan ==
+window_start: timestamp, window_end: timestamp, total_records: bigint, distinct_aircraft: bigint, avg_velocity_ms: double, avg_baro_alt_m: double
+~Project [window#122-T120000ms.start AS window_start#227, window#122-T120000ms.end AS window_end#228, total_records#6L, distinct_aircraft#7L, round(avg_velocity_ms#8, 2) AS avg_velocity_ms#229, round(avg_baro_alt_m#9, 2) AS avg_baro_alt_m#230]
++- ~Aggregate [window#122-T120000ms], [window#122-T120000ms, count(icao24#3) AS total_records#6L, approx_count_distinct(icao24#3, 0.05, 0, 0) AS distinct_aircraft#7L, avg(velocity#4) AS avg_velocity_ms#8, avg(baroaltitude#5) AS avg_baro_alt_m#9]
+   +- ~Project [named_struct(start, knownnullable(precisetimestampconversion(((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - CASE WHEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) < cast(0 as bigint)) THEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) + 300000000) ELSE ((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) END) - 0), LongType, TimestampType)), end, knownnullable(precisetimestampconversion((((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - CASE WHEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) < cast(0 as bigint)) THEN (((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) + 300000000) ELSE ((precisetimestampconversion(event_time#2-T120000ms, TimestampType, LongType) - 0) % 300000000) END) - 0) + 300000000), LongType, TimestampType))) AS window#122-T120000ms, event_time#2-T120000ms, icao24#3, velocity#4, baroaltitude#5]
+      +- ~Filter isnotnull(event_time#2-T120000ms)
+         +- ~EventTimeWatermark eeeef827-9bc4-4227-8cd7-b8f87c8802bc, event_time#2: timestamp, 2 minutes
+            +- ~Project [timestamp#0 AS event_time#2, cast((value#1L % cast(2000 as bigint)) as string) AS icao24#3, cast(((value#1L % cast(900 as bigint)) + cast(100 as bigint)) as double) AS velocity#4, cast(((value#1L % cast(10000 as bigint)) + cast(1000 as bigint)) as double) AS baroaltitude#5]
+               +- ~StreamingRelationV2 org.apache.spark.sql.execution.streaming.sources.RateStreamProvider@45b021bd, rate, org.apache.spark.sql.execution.streaming.sources.RateStreamTable@2575a0eb, [rowsPerSecond=500], [timestamp#0, value#1L]
+
+== Optimized Logical Plan ==
+org.apache.spark.sql.AnalysisException: Queries with streaming sources must be executed with writeStream.start();
+rate
+== Physical Plan ==
+org.apache.spark.sql.AnalysisException: Queries with streaming sources must be executed with writeStream.start();
+rateorg.apache.spark.sql.AnalysisException: Queries with streaming sources must be executed with writeStream.start();
+rate

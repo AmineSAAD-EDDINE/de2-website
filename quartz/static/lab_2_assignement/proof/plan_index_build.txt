@@ -1,0 +1,52 @@
+== Parsed Logical Plan ==
+'Sort ['freq DESC NULLS LAST], true
++- Aggregate [token#167], [token#167, collect_list(doc_id#216, 0, 0) AS doc_ids#227, count(1) AS freq#228L]
+   +- Project [icao24#109 AS doc_id#216, token#167]
+      +- Filter is_valid_token(token#167)#191
+         +- Project [time#108L, icao24#109, lat#110, lon#111, velocity#112, heading#113, vertrate#114, callsign#115, onground#116, alert#117, spi#118, squawk#119, baroaltitude#120, geoaltitude#121, lastposupdate#122, lastcontact#123, callsign_clean#165, token#167]
+            +- Generate explode(split(callsign_clean#165, [\s\W]+, -1)), false, [token#167]
+               +- Project [time#108L, icao24#109, lat#110, lon#111, velocity#112, heading#113, vertrate#114, callsign#115, onground#116, alert#117, spi#118, squawk#119, baroaltitude#120, geoaltitude#121, lastposupdate#122, lastcontact#123, regexp_replace(callsign_clean#164, [^a-z0-9],  , 1) AS callsign_clean#165]
+                  +- Project [time#108L, icao24#109, lat#110, lon#111, velocity#112, heading#113, vertrate#114, callsign#115, onground#116, alert#117, spi#118, squawk#119, baroaltitude#120, geoaltitude#121, lastposupdate#122, lastcontact#123, trim(lower(callsign#115), None) AS callsign_clean#164]
+                     +- Filter isnotnull(callsign#115)
+                        +- Relation [time#108L,icao24#109,lat#110,lon#111,velocity#112,heading#113,vertrate#114,callsign#115,onground#116,alert#117,spi#118,squawk#119,baroaltitude#120,geoaltitude#121,lastposupdate#122,lastcontact#123] csv
+
+== Analyzed Logical Plan ==
+token: string, doc_ids: array<string>, freq: bigint
+Sort [freq#228L DESC NULLS LAST], true
++- Aggregate [token#167], [token#167, collect_list(doc_id#216, 0, 0) AS doc_ids#227, count(1) AS freq#228L]
+   +- Project [icao24#109 AS doc_id#216, token#167]
+      +- Filter is_valid_token(token#167)#191
+         +- Project [time#108L, icao24#109, lat#110, lon#111, velocity#112, heading#113, vertrate#114, callsign#115, onground#116, alert#117, spi#118, squawk#119, baroaltitude#120, geoaltitude#121, lastposupdate#122, lastcontact#123, callsign_clean#165, token#167]
+            +- Generate explode(split(callsign_clean#165, [\s\W]+, -1)), false, [token#167]
+               +- Project [time#108L, icao24#109, lat#110, lon#111, velocity#112, heading#113, vertrate#114, callsign#115, onground#116, alert#117, spi#118, squawk#119, baroaltitude#120, geoaltitude#121, lastposupdate#122, lastcontact#123, regexp_replace(callsign_clean#164, [^a-z0-9],  , 1) AS callsign_clean#165]
+                  +- Project [time#108L, icao24#109, lat#110, lon#111, velocity#112, heading#113, vertrate#114, callsign#115, onground#116, alert#117, spi#118, squawk#119, baroaltitude#120, geoaltitude#121, lastposupdate#122, lastcontact#123, trim(lower(callsign#115), None) AS callsign_clean#164]
+                     +- Filter isnotnull(callsign#115)
+                        +- Relation [time#108L,icao24#109,lat#110,lon#111,velocity#112,heading#113,vertrate#114,callsign#115,onground#116,alert#117,spi#118,squawk#119,baroaltitude#120,geoaltitude#121,lastposupdate#122,lastcontact#123] csv
+
+== Optimized Logical Plan ==
+Sort [freq#228L DESC NULLS LAST], true
++- Aggregate [token#167], [token#167, collect_list(doc_id#216, 0, 0) AS doc_ids#227, count(1) AS freq#228L]
+   +- Project [icao24#109 AS doc_id#216, token#167]
+      +- Project [icao24#109, token#167]
+         +- Filter pythonUDF0#417: boolean
+            +- BatchEvalPython [is_valid_token(token#167)#191], [pythonUDF0#417]
+               +- Generate explode(split(callsign_clean#165, [\s\W]+, -1)), [1], false, [token#167]
+                  +- Project [icao24#109, regexp_replace(trim(lower(callsign#115), None), [^a-z0-9],  , 1) AS callsign_clean#165]
+                     +- Filter isnotnull(callsign#115)
+                        +- Relation [time#108L,icao24#109,lat#110,lon#111,velocity#112,heading#113,vertrate#114,callsign#115,onground#116,alert#117,spi#118,squawk#119,baroaltitude#120,geoaltitude#121,lastposupdate#122,lastcontact#123] csv
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Sort [freq#228L DESC NULLS LAST], true, 0
+   +- Exchange rangepartitioning(freq#228L DESC NULLS LAST, 4), ENSURE_REQUIREMENTS, [plan_id=1651]
+      +- ObjectHashAggregate(keys=[token#167], functions=[collect_list(doc_id#216, 0, 0), count(1)], output=[token#167, doc_ids#227, freq#228L])
+         +- Exchange hashpartitioning(token#167, 4), ENSURE_REQUIREMENTS, [plan_id=1648]
+            +- ObjectHashAggregate(keys=[token#167], functions=[partial_collect_list(doc_id#216, 0, 0), partial_count(1)], output=[token#167, buf#248, count#249L])
+               +- Project [icao24#109 AS doc_id#216, token#167]
+                  +- Project [icao24#109, token#167]
+                     +- Filter pythonUDF0#417: boolean
+                        +- BatchEvalPython [is_valid_token(token#167)#191], [pythonUDF0#417]
+                           +- Generate explode(split(callsign_clean#165, [\s\W]+, -1)), [icao24#109], false, [token#167]
+                              +- Project [icao24#109, regexp_replace(trim(lower(callsign#115), None), [^a-z0-9],  , 1) AS callsign_clean#165]
+                                 +- Filter isnotnull(callsign#115)
+                                    +- FileScan csv [icao24#109,callsign#115] Batched: false, DataFilters: [isnotnull(callsign#115)], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/assignements/stream_..., PartitionFilters: [], PushedFilters: [IsNotNull(callsign)], ReadSchema: struct<icao24:string,callsign:string>

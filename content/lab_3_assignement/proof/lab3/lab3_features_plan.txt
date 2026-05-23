@@ -1,0 +1,36 @@
+== Parsed Logical Plan ==
+'Project [unresolvedstarwithcolumns(features, UDF('raw_features) AS features#205, None)]
++- Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, UDF(struct(velocity, velocity#96, baroaltitude, baroaltitude#104, geoaltitude, geoaltitude#105, hour, hour#131, minute, minute#132)) AS raw_features#202]
+   +- Filter ((isnotnull(velocity#96) AND isnotnull(baroaltitude#104)) AND isnotnull(geoaltitude#105))
+      +- Project [icao24#93 AS aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, cast(hour(event_time#129, Some(Europe/Paris)) as double) AS hour#131, cast(minute(event_time#129, Some(Europe/Paris)) as double) AS minute#132]
+         +- Project [time#92L, icao24#93, lat#94, lon#95, velocity#96, heading#97, vertrate#98, callsign#99, onground#100, alert#101, spi#102, squawk#103, baroaltitude#104, geoaltitude#105, lastposupdate#106, lastcontact#107, to_timestamp(from_unixtime(time#92L, yyyy-MM-dd HH:mm:ss, Some(Europe/Paris)), None, TimestampType, Some(Europe/Paris), true) AS event_time#129]
+            +- Relation [time#92L,icao24#93,lat#94,lon#95,velocity#96,heading#97,vertrate#98,callsign#99,onground#100,alert#101,spi#102,squawk#103,baroaltitude#104,geoaltitude#105,lastposupdate#106,lastcontact#107] csv
+
+== Analyzed Logical Plan ==
+aircraft_id: string, velocity: double, baroaltitude: double, geoaltitude: double, hour: double, minute: double, raw_features: vector, features: vector
+Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, raw_features#202, UDF(raw_features#202) AS features#206]
++- Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, UDF(struct(velocity, velocity#96, baroaltitude, baroaltitude#104, geoaltitude, geoaltitude#105, hour, hour#131, minute, minute#132)) AS raw_features#202]
+   +- Filter ((isnotnull(velocity#96) AND isnotnull(baroaltitude#104)) AND isnotnull(geoaltitude#105))
+      +- Project [icao24#93 AS aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, cast(hour(event_time#129, Some(Europe/Paris)) as double) AS hour#131, cast(minute(event_time#129, Some(Europe/Paris)) as double) AS minute#132]
+         +- Project [time#92L, icao24#93, lat#94, lon#95, velocity#96, heading#97, vertrate#98, callsign#99, onground#100, alert#101, spi#102, squawk#103, baroaltitude#104, geoaltitude#105, lastposupdate#106, lastcontact#107, to_timestamp(from_unixtime(time#92L, yyyy-MM-dd HH:mm:ss, Some(Europe/Paris)), None, TimestampType, Some(Europe/Paris), true) AS event_time#129]
+            +- Relation [time#92L,icao24#93,lat#94,lon#95,velocity#96,heading#97,vertrate#98,callsign#99,onground#100,alert#101,spi#102,squawk#103,baroaltitude#104,geoaltitude#105,lastposupdate#106,lastcontact#107] csv
+
+== Optimized Logical Plan ==
+InMemoryRelation [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, raw_features#202, features#206], StorageLevel(disk, memory, deserialized, 1 replicas)
+   +- *(1) Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, raw_features#202, UDF(raw_features#202) AS features#206]
+      +- *(1) Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, UDF(struct(velocity, velocity#96, baroaltitude, baroaltitude#104, geoaltitude, geoaltitude#105, hour, hour#131, minute, minute#132)) AS raw_features#202]
+         +- *(1) Project [icao24#93 AS aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, cast(hour(event_time#129, Some(Europe/Paris)) as double) AS hour#131, cast(minute(event_time#129, Some(Europe/Paris)) as double) AS minute#132]
+            +- *(1) Project [icao24#93, velocity#96, baroaltitude#104, geoaltitude#105, cast(from_unixtime(time#92L, yyyy-MM-dd HH:mm:ss, Some(Europe/Paris)) as timestamp) AS event_time#129]
+               +- *(1) Filter ((isnotnull(velocity#96) AND isnotnull(baroaltitude#104)) AND isnotnull(geoaltitude#105))
+                  +- FileScan csv [time#92L,icao24#93,velocity#96,baroaltitude#104,geoaltitude#105] Batched: false, DataFilters: [isnotnull(velocity#96), isnotnull(baroaltitude#104), isnotnull(geoaltitude#105)], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/assignements/stream_..., PartitionFilters: [], PushedFilters: [IsNotNull(velocity), IsNotNull(baroaltitude), IsNotNull(geoaltitude)], ReadSchema: struct<time:bigint,icao24:string,velocity:double,baroaltitude:double,geoaltitude:double>
+
+== Physical Plan ==
+InMemoryTableScan [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, raw_features#202, features#206]
+   +- InMemoryRelation [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, raw_features#202, features#206], StorageLevel(disk, memory, deserialized, 1 replicas)
+         +- *(1) Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, raw_features#202, UDF(raw_features#202) AS features#206]
+            +- *(1) Project [aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, hour#131, minute#132, UDF(struct(velocity, velocity#96, baroaltitude, baroaltitude#104, geoaltitude, geoaltitude#105, hour, hour#131, minute, minute#132)) AS raw_features#202]
+               +- *(1) Project [icao24#93 AS aircraft_id#130, velocity#96, baroaltitude#104, geoaltitude#105, cast(hour(event_time#129, Some(Europe/Paris)) as double) AS hour#131, cast(minute(event_time#129, Some(Europe/Paris)) as double) AS minute#132]
+                  +- *(1) Project [icao24#93, velocity#96, baroaltitude#104, geoaltitude#105, cast(from_unixtime(time#92L, yyyy-MM-dd HH:mm:ss, Some(Europe/Paris)) as timestamp) AS event_time#129]
+                     +- *(1) Filter ((isnotnull(velocity#96) AND isnotnull(baroaltitude#104)) AND isnotnull(geoaltitude#105))
+                        +- FileScan csv [time#92L,icao24#93,velocity#96,baroaltitude#104,geoaltitude#105] Batched: false, DataFilters: [isnotnull(velocity#96), isnotnull(baroaltitude#104), isnotnull(geoaltitude#105)], Format: CSV, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/assignements/stream_..., PartitionFilters: [], PushedFilters: [IsNotNull(velocity), IsNotNull(baroaltitude), IsNotNull(geoaltitude)], ReadSchema: struct<time:bigint,icao24:string,velocity:double,baroaltitude:double,geoaltitude:double>
+

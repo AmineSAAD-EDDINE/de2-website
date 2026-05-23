@@ -1,0 +1,51 @@
+# DE2 Final Project — Configuration
+# Track D: Aviation / OpenSky Network
+# Author: Badr TAJINI - ESIEE 2025-2026
+
+track: "aviation_opensky"
+
+paths:
+  raw_csv_glob:       "data/project/raw/*.csv"
+  bronze:             "outputs/project/bronze"
+  silver:             "outputs/project/silver"
+  gold:               "outputs/project/gold"
+  streaming_landing:  "data/project/landing/"
+  text_corpus:        "data/project/raw/*.csv"
+  proof:              "proof/"
+  llm_ready:          "outputs/project/llm_ready"
+
+layout:
+  partition_by: ["icao24", "callsign"]
+  compaction_target_mb: 128
+
+streaming:
+  watermark:          "30 minutes"
+  window_duration:    "10 minutes"
+  trigger_interval:   "30 seconds"
+  timeout_seconds:    90
+
+text:
+  min_token_length:  2
+  query_terms: ["flight", "airport", "delay", "arrival", "departure"]
+  stopwords: ["the", "a", "an", "is", "are", "was", "were", "in", "on",
+              "at", "to", "for", "of", "and", "or", "from", "by"]
+
+iterative:
+  choice: "clustering"   # "graph" or "clustering"
+  k_values: [3, 5, 7, 10, 15]
+  seeds: [42, 123, 456]
+  max_iter: 20
+
+llm:
+  min_text_length:  50
+  schema_version:   "v1.0"
+  source:           "OpenSky Network - ADS-B flight data"
+  intended_use:     "RAG / LLM fine-tuning for aviation domain"
+
+slos:
+  streaming_trigger_sec:      30
+  text_query_latency_ms:      2000
+  clustering_silhouette_min:  0.25
+  pipeline_duration_min:      10
+  storage_ratio_max:          0.60
+  llm_quality_pass_rate_min:  0.80

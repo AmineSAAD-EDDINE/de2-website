@@ -1,0 +1,17 @@
+== Parsed Logical Plan ==
+'Filter '`=`('token, ryr)
++- Relation [token#392,doc_ids#393,freq#394L] parquet
+
+== Analyzed Logical Plan ==
+token: string, doc_ids: array<string>, freq: bigint
+Filter (token#392 = ryr)
++- Relation [token#392,doc_ids#393,freq#394L] parquet
+
+== Optimized Logical Plan ==
+Filter (isnotnull(token#392) AND (token#392 = ryr))
++- Relation [token#392,doc_ids#393,freq#394L] parquet
+
+== Physical Plan ==
+*(1) Filter (isnotnull(token#392) AND (token#392 = ryr))
++- *(1) ColumnarToRow
+   +- FileScan parquet [token#392,doc_ids#393,freq#394L] Batched: true, DataFilters: [isnotnull(token#392), (token#392 = ryr)], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/assignements/outputs..., PartitionFilters: [], PushedFilters: [IsNotNull(token), EqualTo(token,ryr)], ReadSchema: struct<token:string,doc_ids:array<string>,freq:bigint>
