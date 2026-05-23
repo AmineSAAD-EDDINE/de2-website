@@ -12,8 +12,8 @@ publish: true
 
 ## Notebook
 
-- [DE1_Project_Notebook_EN_DELEHELLE_SAAD-EDDINE.ipynb](../../../quartz/static/projet/DE2_Project_Notebook_EN.ipynb)
+- [DE2_Project_Notebook_EN.ipynb](DE2_Project_Notebook_EN.ipynb)
 
 ## Config file
 
--[de1_project_config.yml](../../../quartz/static/final_project/projet/de2_project_config.yml)
+- [de2_project_config.yml](de2_project_config.yml)

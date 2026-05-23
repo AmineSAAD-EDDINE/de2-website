@@ -1,0 +1,14 @@
+config,window_duration,watermark_delay,trigger_interval_s,shuffle_partitions,batch_id,input_rows_per_sec,proc_rows_per_sec,batch_duration_ms
+baseline,5 minutes,2 minutes,10,4,1,178420.3,175900.8,512
+baseline,5 minutes,2 minutes,10,4,2,182110.7,180450.1,498
+baseline,5 minutes,2 minutes,10,4,3,190880.2,188300.6,534
+baseline,5 minutes,2 minutes,10,4,4,185670.9,183200.4,515
+baseline,5 minutes,2 minutes,10,4,5,177950.6,175500.2,540
+baseline,5 minutes,2 minutes,10,4,6,181300.8,178900.3,503
+
+optimized,2 minutes,1 minute,5,2,1,235600.4,233900.1,268
+optimized,2 minutes,1 minute,5,2,2,242880.7,241200.5,245
+optimized,2 minutes,1 minute,5,2,3,251340.9,249700.2,230
+optimized,2 minutes,1 minute,5,2,4,247110.3,245500.6,238
+optimized,2 minutes,1 minute,5,2,5,255980.8,254300.9,220
+optimized,2 minutes,1 minute,5,2,6,260450.2,258900.4,215

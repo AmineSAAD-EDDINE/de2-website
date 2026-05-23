@@ -1,0 +1,31 @@
+run_id,task,timing_ms,files_read,input_size_bytes,shuffle_read_bytes,notes
+r001,index_build,8420,12,183450000,25600000,Initial Parquet index build
+r002,index_build,21950,12,183450000,198000000,CSV index build (no compression)
+r003,query_lookup_ryr,820,1,2145000,0,Parquet hot key lookup
+r004,query_lookup_ryr,3120,12,89450000,0,CSV full scan lookup
+r005,query_lookup_dlh,145,1,2145000,0,Parquet pruning
+r006,query_lookup_dlh,980,12,89450000,0,CSV scan
+r007,query_lookup_klm,96,1,2145000,0,Cache hit Parquet
+r008,query_lookup_klm,760,12,89450000,0,CSV scan
+r009,footprint_parquet,35,0,0,0,Metadata-based size
+r010,footprint_csv,48,0,0,0,Metadata-based size
+r011,index_build_optimized,5100,12,183450000,14500000,Parquet cached execution
+r012,query_lookup_afr,1320,1,2145000,0,Skewed term query
+r013,query_lookup_luf,88,1,2145000,0,Fast Parquet lookup
+r014,query_lookup_baw,210,1,2145000,0,Medium frequency term
+r015,query_lookup_sky,1450,12,89450000,0,CSV heavy scan
+r016,query_lookup_nov,102,1,2145000,0,Parquet optimized path
+r017,index_build_reopt,4720,12,183450000,13200000,Improved partition pruning
+r018,query_lookup_ryr,790,1,2145000,0,Repeated cached query
+r019,query_lookup_klm,85,1,2145000,0,Cache warm Parquet
+r020,query_lookup_dlh,138,1,2145000,0,Optimized Parquet lookup
+r021,query_lookup_afr,1280,1,2145000,0,Skew persists
+r022,query_lookup_xtr,190,1,2145000,0,Medium-frequency term
+r023,query_lookup_brz,240,1,2145000,0,Slightly heavier term
+r024,query_lookup_sun,980,12,89450000,0,CSV full scan
+r025,footprint_parquet,33,0,0,0,Stable Parquet footprint
+r026,footprint_csv,50,0,0,0,Stable CSV footprint
+r027,index_build_final,4550,12,183450000,12000000,Final optimized build
+r028,query_lookup_klm,92,1,2145000,0,Stable cached query
+r029,query_lookup_dlh,150,1,2145000,0,Stable Parquet lookup
+r030,query_lookup_ryr,810,1,2145000,0,Final repeated hot query
