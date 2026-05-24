@@ -12,7 +12,7 @@ publish: true
 
 ## Notebook
 
-- [DE2_Project_Notebook_EN.ipynb](DE2_Project_Notebook_EN.ipynb)
+- [DE2_Project_Notebook_EN.ipynb](DE2_Project_Notebook_EN.md)
 
 ## Config file
 

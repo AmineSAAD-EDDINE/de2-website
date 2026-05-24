@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import re
 import subprocess
 from pathlib import Path
 
@@ -16,6 +17,58 @@ notebooks = [
 if not notebooks:
     print("No notebooks found in content/ to convert.")
     raise SystemExit(0)
+
+
+def write_redirect_md(notebook_path: Path, html_relative_path: str) -> None:
+    md_path = notebook_path.with_suffix(".md")
+    if md_path.exists():
+        return
+
+    content = f"""---
+title: {notebook_path.stem}
+publish: true
+---
+
+This page redirects to the rendered notebook HTML.
+
+<meta http-equiv=\"refresh\" content=\"0;url=/static/{html_relative_path}\" />
+
+If you are not redirected automatically, click [here](/static/{html_relative_path}).
+"""
+    md_path.write_text(content, encoding="utf-8")
+
+
+def replace_ipynb_links() -> None:
+    link_regex = re.compile(r"(\[[^\]]*\]\()([^\)]+?\.ipynb)(\))")
+
+    for md_file in CONTENT_ROOT.rglob("*.md"):
+        if any(part in EXCLUDE_DIRS for part in md_file.parts):
+            continue
+
+        text = md_file.read_text(encoding="utf-8")
+        updated = text
+
+        def replace_match(match):
+            prefix, target, suffix = match.groups()
+            if target.startswith("http://") or target.startswith("https://") or target.startswith("mailto:"):
+                return match.group(0)
+
+            target_path = Path(target)
+            if not target_path.is_absolute():
+                candidate = md_file.parent / target_path
+            else:
+                candidate = CONTENT_ROOT / target_path.relative_to("/")
+
+            if candidate.exists():
+                return f"{prefix}{target_path.with_suffix('.md').as_posix()}{suffix}"
+            return match.group(0)
+
+        updated = link_regex.sub(replace_match, text)
+
+        if updated != text:
+            print(f"Updating links in {md_file}")
+            md_file.write_text(updated, encoding="utf-8")
+
 
 for notebook in notebooks:
     relative = notebook.relative_to(CONTENT_ROOT).with_suffix(".html")
@@ -38,4 +91,8 @@ for notebook in notebooks:
     if result.returncode != 0:
         raise SystemExit(result.returncode)
 
-print("Notebook conversion complete.")
+    write_redirect_md(notebook, relative.as_posix())
+
+replace_ipynb_links()
+
+print("Notebook conversion and redirect page generation complete.")
