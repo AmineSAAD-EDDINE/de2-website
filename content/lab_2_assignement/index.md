@@ -16,9 +16,7 @@ publish: true
 
 ## Notebook
 
-- [Voir le notebook HTML](/static/lab_2_assignement/assignment2_esiee.html)
-
-<iframe src="/static/lab_2_assignement/assignment2_esiee.html" style="width:100%;min-height:80vh;border:1px solid #ccc;"></iframe>
+- [Voir le notebook dédié](/lab_2_assignement/notebook)
 
 ## Metrics log
 
