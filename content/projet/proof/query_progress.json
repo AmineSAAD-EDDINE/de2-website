@@ -1,0 +1,56 @@
+{
+  "id": "c8ccbbbc-5848-4c94-a2a3-af4934d23590",
+  "runId": "e14f36a8-38e3-47eb-981d-070198ab334c",
+  "name": null,
+  "timestamp": "2026-05-24T17:30:30.000Z",
+  "batchId": 3,
+  "batchDuration": 5,
+  "durationMs": {
+    "triggerExecution": 5,
+    "latestOffset": 4
+  },
+  "eventTime": {
+    "watermark": "2023-12-31T17:45:42.000Z"
+  },
+  "stateOperators": [
+    {
+      "operatorName": "stateStoreSave",
+      "numRowsTotal": 1,
+      "numRowsUpdated": 0,
+      "numRowsRemoved": 0,
+      "allUpdatesTimeMs": 0,
+      "allRemovalsTimeMs": 0,
+      "commitTimeMs": 449,
+      "memoryUsedBytes": 69704,
+      "numRowsDroppedByWatermark": 0,
+      "numShufflePartitions": 8,
+      "numStateStoreInstances": 8,
+      "customMetrics": {
+        "stateOnCurrentVersionSizeBytes": 1608,
+        "loadedMapCacheHitCount": 32,
+        "loadedMapCacheMissCount": 0
+      }
+    }
+  ],
+  "sources": [
+    {
+      "description": "FileStreamSource[file:/home/maxence/Documents/DE2_Data_Engineering/data/project/landing]",
+      "startOffset": "{\"logOffset\":2}",
+      "endOffset": "{\"logOffset\":2}",
+      "latestOffset": "None",
+      "numInputRows": 0,
+      "inputRowsPerSecond": 0.0,
+      "processedRowsPerSecond": 0.0,
+      "metrics": {}
+    }
+  ],
+  "sink": {
+    "description": "FileSink[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/streaming]",
+    "numOutputRows": -1,
+    "metrics": {}
+  },
+  "numInputRows": 0,
+  "inputRowsPerSecond": 0.0,
+  "processedRowsPerSecond": 0.0,
+  "observedMetrics": {}
+}

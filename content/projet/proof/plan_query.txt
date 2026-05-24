@@ -1,0 +1,21 @@
+== Parsed Logical Plan ==
+'Filter '`=`('token, lfpg)
++- Relation [token#17267,term_freq#17268L,doc_freq#17269L,doc_ids#17270] parquet
+
+== Analyzed Logical Plan ==
+token: string, term_freq: bigint, doc_freq: bigint, doc_ids: array<bigint>
+Filter (token#17267 = lfpg)
++- Relation [token#17267,term_freq#17268L,doc_freq#17269L,doc_ids#17270] parquet
+
+== Optimized Logical Plan ==
+Filter (isnotnull(token#17267) AND (token#17267 = lfpg))
++- InMemoryRelation [token#17267, term_freq#17268L, doc_freq#17269L, doc_ids#17270], StorageLevel(disk, memory, deserialized, 1 replicas)
+      +- *(1) ColumnarToRow
+         +- FileScan parquet [token#17267,term_freq#17268L,doc_freq#17269L,doc_ids#17270] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/text], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<token:string,term_freq:bigint,doc_freq:bigint,doc_ids:array<bigint>>
+
+== Physical Plan ==
+*(1) Filter (isnotnull(token#17267) AND (token#17267 = lfpg))
++- InMemoryTableScan [token#17267, term_freq#17268L, doc_freq#17269L, doc_ids#17270], [isnotnull(token#17267), (token#17267 = lfpg)]
+      +- InMemoryRelation [token#17267, term_freq#17268L, doc_freq#17269L, doc_ids#17270], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- *(1) ColumnarToRow
+               +- FileScan parquet [token#17267,term_freq#17268L,doc_freq#17269L,doc_ids#17270] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/text], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<token:string,term_freq:bigint,doc_freq:bigint,doc_ids:array<bigint>>

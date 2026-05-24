@@ -1,0 +1,70 @@
+== Parsed Logical Plan ==
+Repartition 4, true
++- Project [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+   +- Project [icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874, raw_features#17884, UDF(raw_features#17884) AS features#17937]
+      +- Project [icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874, UDF(struct(flight_duration_sec_double_VectorAssembler_7fffe130b89b, cast(flight_duration_sec#17868L as double), dep_horiz_m_double_VectorAssembler_7fffe130b89b, cast(dep_horiz_m#17869 as double), dep_vert_m_double_VectorAssembler_7fffe130b89b, cast(dep_vert_m#17870 as double), arr_horiz_m_double_VectorAssembler_7fffe130b89b, cast(arr_horiz_m#17871 as double), arr_vert_m_double_VectorAssembler_7fffe130b89b, cast(arr_vert_m#17872 as double), dep_cand_double_VectorAssembler_7fffe130b89b, cast(dep_cand#17873 as double), arr_cand_double_VectorAssembler_7fffe130b89b, cast(arr_cand#17874 as double))) AS raw_features#17884]
+         +- Filter atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874)
+            +- Project [icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874]
+               +- Relation [icao24#17860,callsign#17861,dep_airport#17862,arr_airport#17863,firstseen#17864L,lastseen#17865L,day#17866L,event_ts#17867,flight_duration_sec#17868L,dep_horiz_m#17869,dep_vert_m#17870,arr_horiz_m#17871,arr_vert_m#17872,dep_cand#17873,arr_cand#17874] parquet
+
+== Analyzed Logical Plan ==
+icao24: string, firstseen: bigint, day: bigint, features: vector
+Repartition 4, true
++- Project [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+   +- Project [icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874, raw_features#17884, UDF(raw_features#17884) AS features#17937]
+      +- Project [icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874, UDF(struct(flight_duration_sec_double_VectorAssembler_7fffe130b89b, cast(flight_duration_sec#17868L as double), dep_horiz_m_double_VectorAssembler_7fffe130b89b, cast(dep_horiz_m#17869 as double), dep_vert_m_double_VectorAssembler_7fffe130b89b, cast(dep_vert_m#17870 as double), arr_horiz_m_double_VectorAssembler_7fffe130b89b, cast(arr_horiz_m#17871 as double), arr_vert_m_double_VectorAssembler_7fffe130b89b, cast(arr_vert_m#17872 as double), dep_cand_double_VectorAssembler_7fffe130b89b, cast(dep_cand#17873 as double), arr_cand_double_VectorAssembler_7fffe130b89b, cast(arr_cand#17874 as double))) AS raw_features#17884]
+         +- Filter atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874)
+            +- Project [icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874]
+               +- Relation [icao24#17860,callsign#17861,dep_airport#17862,arr_airport#17863,firstseen#17864L,lastseen#17865L,day#17866L,event_ts#17867,flight_duration_sec#17868L,dep_horiz_m#17869,dep_vert_m#17870,arr_horiz_m#17871,arr_vert_m#17872,dep_cand#17873,arr_cand#17874] parquet
+
+== Optimized Logical Plan ==
+InMemoryRelation [icao24#17860, firstseen#17864L, day#17866L, features#17937], StorageLevel(disk, memory, deserialized, 1 replicas)
+   +- AdaptiveSparkPlan isFinalPlan=true
+      +- == Final Plan ==
+         ResultQueryStage 2
+         +- ShuffleQueryStage 1
+            +- Exchange RoundRobinPartitioning(4), REPARTITION_BY_NUM, [plan_id=6988]
+               +- TableCacheQueryStage 0
+                  +- InMemoryTableScan [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+                        +- InMemoryRelation [icao24#17860, firstseen#17864L, day#17866L, features#17937], StorageLevel(disk, memory, deserialized, 1 replicas)
+                              +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(raw_features#17884) AS features#17937]
+                                 +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(struct(flight_duration_sec_double_VectorAssembler_7fffe130b89b, cast(flight_duration_sec#17868L as double), dep_horiz_m_double_VectorAssembler_7fffe130b89b, cast(dep_horiz_m#17869 as double), dep_vert_m_double_VectorAssembler_7fffe130b89b, cast(dep_vert_m#17870 as double), arr_horiz_m_double_VectorAssembler_7fffe130b89b, cast(arr_horiz_m#17871 as double), arr_vert_m_double_VectorAssembler_7fffe130b89b, cast(arr_vert_m#17872 as double), dep_cand_double_VectorAssembler_7fffe130b89b, cast(dep_cand#17873 as double), arr_cand_double_VectorAssembler_7fffe130b89b, cast(arr_cand#17874 as double))) AS raw_features#17884]
+                                    +- *(1) Filter atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874)
+                                       +- *(1) ColumnarToRow
+                                          +- FileScan parquet [icao24#17860,firstseen#17864L,day#17866L,flight_duration_sec#17868L,dep_horiz_m#17869,dep_vert_m#17870,arr_horiz_m#17871,arr_vert_m#17872,dep_cand#17873,arr_cand#17874] Batched: true, DataFilters: [atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<icao24:string,firstseen:bigint,day:bigint,flight_duration_sec:bigint,dep_horiz_m:int,dep_v...
+      +- == Initial Plan ==
+         Exchange RoundRobinPartitioning(4), REPARTITION_BY_NUM, [plan_id=6962]
+         +- InMemoryTableScan [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+               +- InMemoryRelation [icao24#17860, firstseen#17864L, day#17866L, features#17937], StorageLevel(disk, memory, deserialized, 1 replicas)
+                     +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(raw_features#17884) AS features#17937]
+                        +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(struct(flight_duration_sec_double_VectorAssembler_7fffe130b89b, cast(flight_duration_sec#17868L as double), dep_horiz_m_double_VectorAssembler_7fffe130b89b, cast(dep_horiz_m#17869 as double), dep_vert_m_double_VectorAssembler_7fffe130b89b, cast(dep_vert_m#17870 as double), arr_horiz_m_double_VectorAssembler_7fffe130b89b, cast(arr_horiz_m#17871 as double), arr_vert_m_double_VectorAssembler_7fffe130b89b, cast(arr_vert_m#17872 as double), dep_cand_double_VectorAssembler_7fffe130b89b, cast(dep_cand#17873 as double), arr_cand_double_VectorAssembler_7fffe130b89b, cast(arr_cand#17874 as double))) AS raw_features#17884]
+                           +- *(1) Filter atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874)
+                              +- *(1) ColumnarToRow
+                                 +- FileScan parquet [icao24#17860,firstseen#17864L,day#17866L,flight_duration_sec#17868L,dep_horiz_m#17869,dep_vert_m#17870,arr_horiz_m#17871,arr_vert_m#17872,dep_cand#17873,arr_cand#17874] Batched: true, DataFilters: [atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<icao24:string,firstseen:bigint,day:bigint,flight_duration_sec:bigint,dep_horiz_m:int,dep_v...
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- InMemoryTableScan [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+      +- InMemoryRelation [icao24#17860, firstseen#17864L, day#17866L, features#17937], StorageLevel(disk, memory, deserialized, 1 replicas)
+            +- AdaptiveSparkPlan isFinalPlan=true
+               +- == Final Plan ==
+                  ResultQueryStage 2
+                  +- ShuffleQueryStage 1
+                     +- Exchange RoundRobinPartitioning(4), REPARTITION_BY_NUM, [plan_id=6988]
+                        +- TableCacheQueryStage 0
+                           +- InMemoryTableScan [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+                                 +- InMemoryRelation [icao24#17860, firstseen#17864L, day#17866L, features#17937], StorageLevel(disk, memory, deserialized, 1 replicas)
+                                       +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(raw_features#17884) AS features#17937]
+                                          +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(struct(flight_duration_sec_double_VectorAssembler_7fffe130b89b, cast(flight_duration_sec#17868L as double), dep_horiz_m_double_VectorAssembler_7fffe130b89b, cast(dep_horiz_m#17869 as double), dep_vert_m_double_VectorAssembler_7fffe130b89b, cast(dep_vert_m#17870 as double), arr_horiz_m_double_VectorAssembler_7fffe130b89b, cast(arr_horiz_m#17871 as double), arr_vert_m_double_VectorAssembler_7fffe130b89b, cast(arr_vert_m#17872 as double), dep_cand_double_VectorAssembler_7fffe130b89b, cast(dep_cand#17873 as double), arr_cand_double_VectorAssembler_7fffe130b89b, cast(arr_cand#17874 as double))) AS raw_features#17884]
+                                             +- *(1) Filter atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874)
+                                                +- *(1) ColumnarToRow
+                                                   +- FileScan parquet [icao24#17860,firstseen#17864L,day#17866L,flight_duration_sec#17868L,dep_horiz_m#17869,dep_vert_m#17870,arr_horiz_m#17871,arr_vert_m#17872,dep_cand#17873,arr_cand#17874] Batched: true, DataFilters: [atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<icao24:string,firstseen:bigint,day:bigint,flight_duration_sec:bigint,dep_horiz_m:int,dep_v...
+               +- == Initial Plan ==
+                  Exchange RoundRobinPartitioning(4), REPARTITION_BY_NUM, [plan_id=6962]
+                  +- InMemoryTableScan [icao24#17860, firstseen#17864L, day#17866L, features#17937]
+                        +- InMemoryRelation [icao24#17860, firstseen#17864L, day#17866L, features#17937], StorageLevel(disk, memory, deserialized, 1 replicas)
+                              +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(raw_features#17884) AS features#17937]
+                                 +- *(1) Project [icao24#17860, firstseen#17864L, day#17866L, UDF(struct(flight_duration_sec_double_VectorAssembler_7fffe130b89b, cast(flight_duration_sec#17868L as double), dep_horiz_m_double_VectorAssembler_7fffe130b89b, cast(dep_horiz_m#17869 as double), dep_vert_m_double_VectorAssembler_7fffe130b89b, cast(dep_vert_m#17870 as double), arr_horiz_m_double_VectorAssembler_7fffe130b89b, cast(arr_horiz_m#17871 as double), arr_vert_m_double_VectorAssembler_7fffe130b89b, cast(arr_vert_m#17872 as double), dep_cand_double_VectorAssembler_7fffe130b89b, cast(dep_cand#17873 as double), arr_cand_double_VectorAssembler_7fffe130b89b, cast(arr_cand#17874 as double))) AS raw_features#17884]
+                                    +- *(1) Filter atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep_horiz_m#17869, dep_vert_m#17870, arr_horiz_m#17871, arr_vert_m#17872, dep_cand#17873, arr_cand#17874)
+                                       +- *(1) ColumnarToRow
+                                          +- FileScan parquet [icao24#17860,firstseen#17864L,day#17866L,flight_duration_sec#17868L,dep_horiz_m#17869,dep_vert_m#17870,arr_horiz_m#17871,arr_vert_m#17872,dep_cand#17873,arr_cand#17874] Batched: true, DataFilters: [atleastnnonnulls(10, icao24#17860, firstseen#17864L, day#17866L, flight_duration_sec#17868L, dep..., Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<icao24:string,firstseen:bigint,day:bigint,flight_duration_sec:bigint,dep_horiz_m:int,dep_v...

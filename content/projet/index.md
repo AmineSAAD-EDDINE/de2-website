@@ -17,3 +17,11 @@ publish: true
 ## Config file
 
 - [de2_project_config.yml](de2_project_config.yml)
+
+## Metrics logs
+
+- [project_metrics_log.csv](project_metrics_log.csv)
+
+## Proof
+
+- [Drive folder](https://drive.google.com/drive/folders/1A1aoEDZUB2vV98JRvSAIV-plbm_DyO8Y?usp=sharing)

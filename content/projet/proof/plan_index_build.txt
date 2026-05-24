@@ -1,0 +1,61 @@
+== Parsed Logical Plan ==
+'Sort ['term_freq DESC NULLS LAST], true
++- Aggregate [token#16576], [token#16576, count(1) AS term_freq#16578L, count(distinct doc_id#16566L) AS doc_freq#16579L, collect_list(doc_id#16566L, 0, 0) AS doc_ids#16580]
+   +- Filter <lambda>(token#16576)#16577
+      +- Filter (length(token#16576) >= 2)
+         +- Project [doc_id#16566L, token#16576]
+            +- Generate explode(tokens#16574), false, [token#16576]
+               +- Project [doc_id#16566L, text#16565, text_clean#16573, split(text_clean#16573, \s+, -1) AS tokens#16574]
+                  +- Project [doc_id#16566L, text#16565, regexp_replace(lower(text#16565), [^a-z0-9\s], , 1) AS text_clean#16573]
+                     +- Project [doc_id#16566L, text#16565]
+                        +- Project [icao24#16549, callsign#16550, dep_airport#16551, arr_airport#16552, firstseen#16553L, lastseen#16554L, day#16555L, event_ts#16556, flight_duration_sec#16557L, dep_horiz_m#16558, dep_vert_m#16559, arr_horiz_m#16560, arr_vert_m#16561, dep_cand#16562, arr_cand#16563, text#16565, monotonically_increasing_id() AS doc_id#16566L]
+                           +- Project [icao24#16549, callsign#16550, dep_airport#16551, arr_airport#16552, firstseen#16553L, lastseen#16554L, day#16555L, event_ts#16556, flight_duration_sec#16557L, dep_horiz_m#16558, dep_vert_m#16559, arr_horiz_m#16560, arr_vert_m#16561, dep_cand#16562, arr_cand#16563, concat_ws( , coalesce(callsign#16550, ), coalesce(dep_airport#16551, ), coalesce(arr_airport#16552, ), coalesce(cast(flight_duration_sec#16557L as string), )) AS text#16565]
+                              +- Relation [icao24#16549,callsign#16550,dep_airport#16551,arr_airport#16552,firstseen#16553L,lastseen#16554L,day#16555L,event_ts#16556,flight_duration_sec#16557L,dep_horiz_m#16558,dep_vert_m#16559,arr_horiz_m#16560,arr_vert_m#16561,dep_cand#16562,arr_cand#16563] parquet
+
+== Analyzed Logical Plan ==
+token: string, term_freq: bigint, doc_freq: bigint, doc_ids: array<bigint>
+Sort [term_freq#16578L DESC NULLS LAST], true
++- Aggregate [token#16576], [token#16576, count(1) AS term_freq#16578L, count(distinct doc_id#16566L) AS doc_freq#16579L, collect_list(doc_id#16566L, 0, 0) AS doc_ids#16580]
+   +- Filter <lambda>(token#16576)#16577
+      +- Filter (length(token#16576) >= 2)
+         +- Project [doc_id#16566L, token#16576]
+            +- Generate explode(tokens#16574), false, [token#16576]
+               +- Project [doc_id#16566L, text#16565, text_clean#16573, split(text_clean#16573, \s+, -1) AS tokens#16574]
+                  +- Project [doc_id#16566L, text#16565, regexp_replace(lower(text#16565), [^a-z0-9\s], , 1) AS text_clean#16573]
+                     +- Project [doc_id#16566L, text#16565]
+                        +- Project [icao24#16549, callsign#16550, dep_airport#16551, arr_airport#16552, firstseen#16553L, lastseen#16554L, day#16555L, event_ts#16556, flight_duration_sec#16557L, dep_horiz_m#16558, dep_vert_m#16559, arr_horiz_m#16560, arr_vert_m#16561, dep_cand#16562, arr_cand#16563, text#16565, monotonically_increasing_id() AS doc_id#16566L]
+                           +- Project [icao24#16549, callsign#16550, dep_airport#16551, arr_airport#16552, firstseen#16553L, lastseen#16554L, day#16555L, event_ts#16556, flight_duration_sec#16557L, dep_horiz_m#16558, dep_vert_m#16559, arr_horiz_m#16560, arr_vert_m#16561, dep_cand#16562, arr_cand#16563, concat_ws( , coalesce(callsign#16550, ), coalesce(dep_airport#16551, ), coalesce(arr_airport#16552, ), coalesce(cast(flight_duration_sec#16557L as string), )) AS text#16565]
+                              +- Relation [icao24#16549,callsign#16550,dep_airport#16551,arr_airport#16552,firstseen#16553L,lastseen#16554L,day#16555L,event_ts#16556,flight_duration_sec#16557L,dep_horiz_m#16558,dep_vert_m#16559,arr_horiz_m#16560,arr_vert_m#16561,dep_cand#16562,arr_cand#16563] parquet
+
+== Optimized Logical Plan ==
+Sort [term_freq#16578L DESC NULLS LAST], true
++- Aggregate [token#16576], [token#16576, count(1) AS term_freq#16578L, count(distinct doc_id#16566L) AS doc_freq#16579L, collect_list(doc_id#16566L, 0, 0) AS doc_ids#16580]
+   +- Project [doc_id#16566L, token#16576]
+      +- Filter pythonUDF0#16586: boolean
+         +- BatchEvalPython [<lambda>(token#16576)#16577], [pythonUDF0#16586]
+            +- Filter (length(token#16576) >= 2)
+               +- Generate explode(tokens#16574), [1], false, [token#16576]
+                  +- Project [doc_id#16566L, split(regexp_replace(lower(text#16565), [^a-z0-9\s], , 1), \s+, -1) AS tokens#16574]
+                     +- Filter (size(split(regexp_replace(lower(text#16565), [^a-z0-9\s], , 1), \s+, -1), false) > 0)
+                        +- Project [concat_ws( , coalesce(callsign#16550, ), coalesce(dep_airport#16551, ), coalesce(arr_airport#16552, ), coalesce(cast(flight_duration_sec#16557L as string), )) AS text#16565, monotonically_increasing_id() AS doc_id#16566L]
+                           +- Relation [icao24#16549,callsign#16550,dep_airport#16551,arr_airport#16552,firstseen#16553L,lastseen#16554L,day#16555L,event_ts#16556,flight_duration_sec#16557L,dep_horiz_m#16558,dep_vert_m#16559,arr_horiz_m#16560,arr_vert_m#16561,dep_cand#16562,arr_cand#16563] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Sort [term_freq#16578L DESC NULLS LAST], true, 0
+   +- Exchange rangepartitioning(term_freq#16578L DESC NULLS LAST, 8), ENSURE_REQUIREMENTS, [plan_id=2518]
+      +- ObjectHashAggregate(keys=[token#16576], functions=[count(1), collect_list(doc_id#16566L, 0, 0), count(distinct doc_id#16566L)], output=[token#16576, term_freq#16578L, doc_freq#16579L, doc_ids#16580])
+         +- Exchange hashpartitioning(token#16576, 8), ENSURE_REQUIREMENTS, [plan_id=2515]
+            +- ObjectHashAggregate(keys=[token#16576], functions=[merge_count(1), merge_collect_list(doc_id#16566L, 0, 0), partial_count(distinct doc_id#16566L)], output=[token#16576, count#16588L, buf#16590, count#16593L])
+               +- ObjectHashAggregate(keys=[token#16576, doc_id#16566L], functions=[merge_count(1), merge_collect_list(doc_id#16566L, 0, 0)], output=[token#16576, doc_id#16566L, count#16588L, buf#16590])
+                  +- Exchange hashpartitioning(token#16576, doc_id#16566L, 8), ENSURE_REQUIREMENTS, [plan_id=2511]
+                     +- ObjectHashAggregate(keys=[token#16576, doc_id#16566L], functions=[partial_count(1), partial_collect_list(doc_id#16566L, 0, 0)], output=[token#16576, doc_id#16566L, count#16588L, buf#16590])
+                        +- Project [doc_id#16566L, token#16576]
+                           +- Filter pythonUDF0#16586: boolean
+                              +- BatchEvalPython [<lambda>(token#16576)#16577], [pythonUDF0#16586]
+                                 +- Filter (length(token#16576) >= 2)
+                                    +- Generate explode(tokens#16574), [doc_id#16566L], false, [token#16576]
+                                       +- Project [doc_id#16566L, split(regexp_replace(lower(text#16565), [^a-z0-9\s], , 1), \s+, -1) AS tokens#16574]
+                                          +- Filter (size(split(regexp_replace(lower(text#16565), [^a-z0-9\s], , 1), \s+, -1), false) > 0)
+                                             +- Project [concat_ws( , coalesce(callsign#16550, ), coalesce(dep_airport#16551, ), coalesce(arr_airport#16552, ), coalesce(cast(flight_duration_sec#16557L as string), )) AS text#16565, monotonically_increasing_id() AS doc_id#16566L]
+                                                +- FileScan parquet [callsign#16550,dep_airport#16551,arr_airport#16552,flight_duration_sec#16557L] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<callsign:string,dep_airport:string,arr_airport:string,flight_duration_sec:bigint>

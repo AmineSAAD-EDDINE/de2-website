@@ -1,0 +1,34 @@
+== Parsed Logical Plan ==
+'Sort ['day_date ASC NULLS FIRST], true
++- Aggregate [day_date#829], [day_date#829, count(1) AS n_flights#830L, avg(flight_duration_sec#627L) AS avg_duration_sec#831, count(distinct dep_airport#621) AS n_dep_airports#832L, count(distinct arr_airport#622) AS n_arr_airports#833L]
+   +- Project [icao24#619, callsign#620, dep_airport#621, arr_airport#622, firstseen#623L, lastseen#624L, day#625L, event_ts#626, flight_duration_sec#627L, dep_horiz_m#628, dep_vert_m#629, arr_horiz_m#630, arr_vert_m#631, dep_cand#632, arr_cand#633, from_unixtime(day#625L, yyyy-MM-dd, Some(Europe/Paris)) AS day_date#829]
+      +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Analyzed Logical Plan ==
+day_date: string, n_flights: bigint, avg_duration_sec: double, n_dep_airports: bigint, n_arr_airports: bigint
+Sort [day_date#829 ASC NULLS FIRST], true
++- Aggregate [day_date#829], [day_date#829, count(1) AS n_flights#830L, avg(flight_duration_sec#627L) AS avg_duration_sec#831, count(distinct dep_airport#621) AS n_dep_airports#832L, count(distinct arr_airport#622) AS n_arr_airports#833L]
+   +- Project [icao24#619, callsign#620, dep_airport#621, arr_airport#622, firstseen#623L, lastseen#624L, day#625L, event_ts#626, flight_duration_sec#627L, dep_horiz_m#628, dep_vert_m#629, arr_horiz_m#630, arr_vert_m#631, dep_cand#632, arr_cand#633, from_unixtime(day#625L, yyyy-MM-dd, Some(Europe/Paris)) AS day_date#829]
+      +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Optimized Logical Plan ==
+Sort [day_date#829 ASC NULLS FIRST], true
++- Aggregate [day_date#829], [day_date#829, coalesce(first(count(1)#858L, true) FILTER (WHERE (gid#854 = 0)), 0) AS n_flights#830L, first(avg(flight_duration_sec)#860, true) FILTER (WHERE (gid#854 = 0)) AS avg_duration_sec#831, count(dep_airport#855) FILTER (WHERE (gid#854 = 1)) AS n_dep_airports#832L, count(arr_airport#856) FILTER (WHERE (gid#854 = 2)) AS n_arr_airports#833L]
+   +- Aggregate [day_date#829, dep_airport#855, arr_airport#856, gid#854], [day_date#829, dep_airport#855, arr_airport#856, gid#854, count(1) AS count(1)#858L, avg(flight_duration_sec#857L) AS avg(flight_duration_sec)#860]
+      +- Expand [[day_date#829, null, null, 0, flight_duration_sec#627L], [day_date#829, dep_airport#621, null, 1, null], [day_date#829, null, arr_airport#622, 2, null]], [day_date#829, dep_airport#855, arr_airport#856, gid#854, flight_duration_sec#857L]
+         +- Project [dep_airport#621, arr_airport#622, flight_duration_sec#627L, from_unixtime(day#625L, yyyy-MM-dd, Some(Europe/Paris)) AS day_date#829]
+            +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Sort [day_date#829 ASC NULLS FIRST], true, 0
+   +- Exchange rangepartitioning(day_date#829 ASC NULLS FIRST, 8), ENSURE_REQUIREMENTS, [plan_id=681]
+      +- HashAggregate(keys=[day_date#829], functions=[first(count(1)#858L, true), first(avg(flight_duration_sec)#860, true), count(dep_airport#855), count(arr_airport#856)], output=[day_date#829, n_flights#830L, avg_duration_sec#831, n_dep_airports#832L, n_arr_airports#833L])
+         +- Exchange hashpartitioning(day_date#829, 8), ENSURE_REQUIREMENTS, [plan_id=678]
+            +- HashAggregate(keys=[day_date#829], functions=[partial_first(count(1)#858L, true) FILTER (WHERE (gid#854 = 0)), partial_first(avg(flight_duration_sec)#860, true) FILTER (WHERE (gid#854 = 0)), partial_count(dep_airport#855) FILTER (WHERE (gid#854 = 1)), partial_count(arr_airport#856) FILTER (WHERE (gid#854 = 2))], output=[day_date#829, first#868L, valueSet#869, first#870, valueSet#871, count#872L, count#873L])
+               +- HashAggregate(keys=[day_date#829, dep_airport#855, arr_airport#856, gid#854], functions=[count(1), avg(flight_duration_sec#857L)], output=[day_date#829, dep_airport#855, arr_airport#856, gid#854, count(1)#858L, avg(flight_duration_sec)#860])
+                  +- Exchange hashpartitioning(day_date#829, dep_airport#855, arr_airport#856, gid#854, 8), ENSURE_REQUIREMENTS, [plan_id=674]
+                     +- HashAggregate(keys=[day_date#829, dep_airport#855, arr_airport#856, gid#854], functions=[partial_count(1), partial_avg(flight_duration_sec#857L)], output=[day_date#829, dep_airport#855, arr_airport#856, gid#854, count#877L, sum#878, count#879L])
+                        +- Expand [[day_date#829, null, null, 0, flight_duration_sec#627L], [day_date#829, dep_airport#621, null, 1, null], [day_date#829, null, arr_airport#622, 2, null]], [day_date#829, dep_airport#855, arr_airport#856, gid#854, flight_duration_sec#857L]
+                           +- Project [dep_airport#621, arr_airport#622, flight_duration_sec#627L, from_unixtime(day#625L, yyyy-MM-dd, Some(Europe/Paris)) AS day_date#829]
+                              +- FileScan parquet [dep_airport#621,arr_airport#622,day#625L,flight_duration_sec#627L] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<dep_airport:string,arr_airport:string,day:bigint,flight_duration_sec:bigint>

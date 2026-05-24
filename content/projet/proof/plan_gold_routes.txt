@@ -1,0 +1,32 @@
+== Parsed Logical Plan ==
+'Sort ['n_flights DESC NULLS LAST], true
++- Project [dep_airport#621, arr_airport#622, n_flights#634L, avg_duration_sec#635, min_duration_sec#636L, max_duration_sec#637L, stddev_duration_sec#638, n_distinct_aircraft#639L, round((avg_duration_sec#635 / cast(3600 as double)), 2) AS avg_duration_h#694]
+   +- Aggregate [dep_airport#621, arr_airport#622], [dep_airport#621, arr_airport#622, count(1) AS n_flights#634L, avg(flight_duration_sec#627L) AS avg_duration_sec#635, min(flight_duration_sec#627L) AS min_duration_sec#636L, max(flight_duration_sec#627L) AS max_duration_sec#637L, stddev(cast(flight_duration_sec#627L as double)) AS stddev_duration_sec#638, count(distinct icao24#619) AS n_distinct_aircraft#639L]
+      +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Analyzed Logical Plan ==
+dep_airport: string, arr_airport: string, n_flights: bigint, avg_duration_sec: double, min_duration_sec: bigint, max_duration_sec: bigint, stddev_duration_sec: double, n_distinct_aircraft: bigint, avg_duration_h: double
+Sort [n_flights#634L DESC NULLS LAST], true
++- Project [dep_airport#621, arr_airport#622, n_flights#634L, avg_duration_sec#635, min_duration_sec#636L, max_duration_sec#637L, stddev_duration_sec#638, n_distinct_aircraft#639L, round((avg_duration_sec#635 / cast(3600 as double)), 2) AS avg_duration_h#694]
+   +- Aggregate [dep_airport#621, arr_airport#622], [dep_airport#621, arr_airport#622, count(1) AS n_flights#634L, avg(flight_duration_sec#627L) AS avg_duration_sec#635, min(flight_duration_sec#627L) AS min_duration_sec#636L, max(flight_duration_sec#627L) AS max_duration_sec#637L, stddev(cast(flight_duration_sec#627L as double)) AS stddev_duration_sec#638, count(distinct icao24#619) AS n_distinct_aircraft#639L]
+      +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Optimized Logical Plan ==
+Sort [n_flights#634L DESC NULLS LAST], true
++- Project [dep_airport#621, arr_airport#622, n_flights#634L, avg_duration_sec#635, min_duration_sec#636L, max_duration_sec#637L, stddev_duration_sec#638, n_distinct_aircraft#639L, round((avg_duration_sec#635 / 3600.0), 2) AS avg_duration_h#694]
+   +- Aggregate [dep_airport#621, arr_airport#622], [dep_airport#621, arr_airport#622, count(1) AS n_flights#634L, avg(flight_duration_sec#627L) AS avg_duration_sec#635, min(flight_duration_sec#627L) AS min_duration_sec#636L, max(flight_duration_sec#627L) AS max_duration_sec#637L, stddev(cast(flight_duration_sec#627L as double)) AS stddev_duration_sec#638, count(distinct icao24#619) AS n_distinct_aircraft#639L]
+      +- Project [icao24#619, dep_airport#621, arr_airport#622, flight_duration_sec#627L]
+         +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Sort [n_flights#634L DESC NULLS LAST], true, 0
+   +- Exchange rangepartitioning(n_flights#634L DESC NULLS LAST, 8), ENSURE_REQUIREMENTS, [plan_id=400]
+      +- Project [dep_airport#621, arr_airport#622, n_flights#634L, avg_duration_sec#635, min_duration_sec#636L, max_duration_sec#637L, stddev_duration_sec#638, n_distinct_aircraft#639L, round((avg_duration_sec#635 / 3600.0), 2) AS avg_duration_h#694]
+         +- HashAggregate(keys=[dep_airport#621, arr_airport#622], functions=[count(1), avg(flight_duration_sec#627L), min(flight_duration_sec#627L), max(flight_duration_sec#627L), stddev(cast(flight_duration_sec#627L as double)), count(distinct icao24#619)], output=[dep_airport#621, arr_airport#622, n_flights#634L, avg_duration_sec#635, min_duration_sec#636L, max_duration_sec#637L, stddev_duration_sec#638, n_distinct_aircraft#639L])
+            +- Exchange hashpartitioning(dep_airport#621, arr_airport#622, 8), ENSURE_REQUIREMENTS, [plan_id=396]
+               +- HashAggregate(keys=[dep_airport#621, arr_airport#622], functions=[merge_count(1), merge_avg(flight_duration_sec#627L), merge_min(flight_duration_sec#627L), merge_max(flight_duration_sec#627L), merge_stddev(cast(flight_duration_sec#627L as double)), partial_count(distinct icao24#619)], output=[dep_airport#621, arr_airport#622, count#696L, sum#699, count#700L, min#702L, max#704L, n#683, avg#684, m2#685, count#707L])
+                  +- HashAggregate(keys=[dep_airport#621, arr_airport#622, icao24#619], functions=[merge_count(1), merge_avg(flight_duration_sec#627L), merge_min(flight_duration_sec#627L), merge_max(flight_duration_sec#627L), merge_stddev(cast(flight_duration_sec#627L as double))], output=[dep_airport#621, arr_airport#622, icao24#619, count#696L, sum#699, count#700L, min#702L, max#704L, n#683, avg#684, m2#685])
+                     +- Exchange hashpartitioning(dep_airport#621, arr_airport#622, icao24#619, 8), ENSURE_REQUIREMENTS, [plan_id=392]
+                        +- HashAggregate(keys=[dep_airport#621, arr_airport#622, icao24#619], functions=[partial_count(1), partial_avg(flight_duration_sec#627L), partial_min(flight_duration_sec#627L), partial_max(flight_duration_sec#627L), partial_stddev(cast(flight_duration_sec#627L as double))], output=[dep_airport#621, arr_airport#622, icao24#619, count#696L, sum#699, count#700L, min#702L, max#704L, n#683, avg#684, m2#685])
+                           +- FileScan parquet [icao24#619,dep_airport#621,arr_airport#622,flight_duration_sec#627L] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<icao24:string,dep_airport:string,arr_airport:string,flight_duration_sec:bigint>

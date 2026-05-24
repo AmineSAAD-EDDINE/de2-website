@@ -1,0 +1,27 @@
+== Parsed Logical Plan ==
+'Project [unresolvedstarwithcolumns(total_air_time_h, 'round('`/`('total_air_time_sec, 3600), 2), None)]
++- Aggregate [icao24#619], [icao24#619, count(1) AS total_flights#954L, sum(flight_duration_sec#627L) AS total_air_time_sec#955L, count(distinct dep_airport#621) AS n_airports_visited#956L, min(event_ts#626) AS first_seen#957, max(event_ts#626) AS last_seen#958, collect_set(callsign#620, 0, 0) AS callsigns_used#959]
+   +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Analyzed Logical Plan ==
+icao24: string, total_flights: bigint, total_air_time_sec: bigint, n_airports_visited: bigint, first_seen: timestamp, last_seen: timestamp, callsigns_used: array<string>, total_air_time_h: double
+Project [icao24#619, total_flights#954L, total_air_time_sec#955L, n_airports_visited#956L, first_seen#957, last_seen#958, callsigns_used#959, round((cast(total_air_time_sec#955L as double) / cast(3600 as double)), 2) AS total_air_time_h#981]
++- Aggregate [icao24#619], [icao24#619, count(1) AS total_flights#954L, sum(flight_duration_sec#627L) AS total_air_time_sec#955L, count(distinct dep_airport#621) AS n_airports_visited#956L, min(event_ts#626) AS first_seen#957, max(event_ts#626) AS last_seen#958, collect_set(callsign#620, 0, 0) AS callsigns_used#959]
+   +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Optimized Logical Plan ==
+Project [icao24#619, total_flights#954L, total_air_time_sec#955L, n_airports_visited#956L, first_seen#957, last_seen#958, callsigns_used#959, round((cast(total_air_time_sec#955L as double) / 3600.0), 2) AS total_air_time_h#981]
++- Aggregate [icao24#619], [icao24#619, count(1) AS total_flights#954L, sum(flight_duration_sec#627L) AS total_air_time_sec#955L, count(distinct dep_airport#621) AS n_airports_visited#956L, min(event_ts#626) AS first_seen#957, max(event_ts#626) AS last_seen#958, collect_set(callsign#620, 0, 0) AS callsigns_used#959]
+   +- Project [icao24#619, callsign#620, dep_airport#621, event_ts#626, flight_duration_sec#627L]
+      +- Relation [icao24#619,callsign#620,dep_airport#621,arr_airport#622,firstseen#623L,lastseen#624L,day#625L,event_ts#626,flight_duration_sec#627L,dep_horiz_m#628,dep_vert_m#629,arr_horiz_m#630,arr_vert_m#631,dep_cand#632,arr_cand#633] parquet
+
+== Physical Plan ==
+AdaptiveSparkPlan isFinalPlan=false
++- Project [icao24#619, total_flights#954L, total_air_time_sec#955L, n_airports_visited#956L, first_seen#957, last_seen#958, callsigns_used#959, round((cast(total_air_time_sec#955L as double) / 3600.0), 2) AS total_air_time_h#981]
+   +- ObjectHashAggregate(keys=[icao24#619], functions=[count(1), sum(flight_duration_sec#627L), min(event_ts#626), max(event_ts#626), collect_set(callsign#620, 0, 0), count(distinct dep_airport#621)], output=[icao24#619, total_flights#954L, total_air_time_sec#955L, n_airports_visited#956L, first_seen#957, last_seen#958, callsigns_used#959])
+      +- Exchange hashpartitioning(icao24#619, 8), ENSURE_REQUIREMENTS, [plan_id=919]
+         +- ObjectHashAggregate(keys=[icao24#619], functions=[merge_count(1), merge_sum(flight_duration_sec#627L), merge_min(event_ts#626), merge_max(event_ts#626), merge_collect_set(callsign#620, 0, 0), partial_count(distinct dep_airport#621)], output=[icao24#619, count#983L, sum#985L, min#987, max#989, buf#991, count#994L])
+            +- ObjectHashAggregate(keys=[icao24#619, dep_airport#621], functions=[merge_count(1), merge_sum(flight_duration_sec#627L), merge_min(event_ts#626), merge_max(event_ts#626), merge_collect_set(callsign#620, 0, 0)], output=[icao24#619, dep_airport#621, count#983L, sum#985L, min#987, max#989, buf#991])
+               +- Exchange hashpartitioning(icao24#619, dep_airport#621, 8), ENSURE_REQUIREMENTS, [plan_id=915]
+                  +- ObjectHashAggregate(keys=[icao24#619, dep_airport#621], functions=[partial_count(1), partial_sum(flight_duration_sec#627L), partial_min(event_ts#626), partial_max(event_ts#626), partial_collect_set(callsign#620, 0, 0)], output=[icao24#619, dep_airport#621, count#983L, sum#985L, min#987, max#989, buf#991])
+                     +- FileScan parquet [icao24#619,callsign#620,dep_airport#621,event_ts#626,flight_duration_sec#627L] Batched: true, DataFilters: [], Format: Parquet, Location: InMemoryFileIndex(1 paths)[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/silver], PartitionFilters: [], PushedFilters: [], ReadSchema: struct<icao24:string,callsign:string,dep_airport:string,event_ts:timestamp,flight_duration_sec:bi...
