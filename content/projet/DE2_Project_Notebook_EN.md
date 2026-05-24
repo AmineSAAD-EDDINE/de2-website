@@ -1,5 +1,5 @@
 ---
-title: Final Project Notebook
+title: DE2_Project_Notebook_EN
 publish: true
 ---
 

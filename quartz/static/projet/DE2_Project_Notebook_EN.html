@@ -7875,12 +7875,29 @@ Author : Badr TAJINI — Data Engineering II (Data-Intensive Workloads) — ESIE
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7fe780ec">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cde9f666">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [17]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PYSPARK_PYTHON"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"/home/maxence/miniconda3/envs/de1-env/bin/python"</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PYSPARK_DRIVER_PYTHON"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"/home/maxence/miniconda3/envs/de1-env/bin/python"</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=7fe780ec">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [18]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span><span class="o">,</span><span class="w"> </span><span class="nn">pathlib</span><span class="o">,</span><span class="w"> </span><span class="nn">datetime</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span><span class="o">,</span><span class="w"> </span><span class="nn">json</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">hashlib</span>
@@ -7913,12 +7930,112 @@ Author : Badr TAJINI — Data Engineering II (Data-Intensive Workloads) — ESIE
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=helpers">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Spark version: 4.0.1
+Spark UI     : http://max-HP-Laptop-14s-dq2xxx.lan:4040
+
+{
+  "track": "aviation_opensky",
+  "paths": {
+    "raw_csv_glob": "data/project/raw/*.csv",
+    "bronze": "outputs/project/bronze",
+    "silver": "outputs/project/silver",
+    "gold": "outputs/project/gold",
+    "streaming_landing": "data/project/landing/",
+    "text_corpus": "data/project/raw/*.csv",
+    "proof": "proof/",
+    "llm_ready": "outputs/project/llm_ready"
+  },
+  "layout": {
+    "partition_by": [
+      "icao24",
+      "callsign"
+    ],
+    "compaction_target_mb": 128
+  },
+  "streaming": {
+    "watermark": "30 minutes",
+    "window_duration": "10 minutes",
+    "trigger_interval": "30 seconds",
+    "timeout_seconds": 90
+  },
+  "text": {
+    "min_token_length": 2,
+    "query_terms": [
+      "flight",
+      "airport",
+      "delay",
+      "arrival",
+      "departure"
+    ],
+    "stopwords": [
+      "the",
+      "a",
+      "an",
+      "is",
+      "are",
+      "was",
+      "were",
+      "in",
+      "on",
+      "at",
+      "to",
+      "for",
+      "of",
+      "and",
+      "or",
+      "from",
+      "by"
+    ]
+  },
+  "iterative": {
+    "choice": "clustering",
+    "k_values": [
+      3,
+      5,
+      7,
+      10,
+      15
+    ],
+    "seeds": [
+      42,
+      123,
+      456
+    ],
+    "max_iter": 20
+  },
+  "llm": {
+    "min_text_length": 50,
+    "schema_version": "v1.0",
+    "source": "OpenSky Network - ADS-B flight data",
+    "intended_use": "RAG / LLM fine-tuning for aviation domain"
+  },
+  "slos": {
+    "streaming_trigger_sec": 30,
+    "text_query_latency_ms": 2000,
+    "clustering_silhouette_min": 0.25,
+    "pipeline_duration_min": 10,
+    "storage_ratio_max": 0.6,
+    "llm_quality_pass_rate_min": 0.8
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=helpers">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Helper — metrics log ──────────────────────────────────────────────────────</span>
@@ -7975,6 +8092,19 @@ Author : Badr TAJINI — Data Engineering II (Data-Intensive Workloads) — ESIE
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Helpers loaded. Run ID: 20260524_192827
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=gen_data">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -7989,12 +8119,12 @@ Place the file(s) in <code>data/project/raw/</code>.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=gen_data_code">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=gen_data_code">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">g</span>
@@ -8085,6 +8215,20 @@ Place the file(s) in <code>data/project/raw/</code>.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Existing raw files: 1
+Using existing raw files: ['data/project/raw/opensky_2023_00.csv']
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8a4d7996">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8098,12 +8242,12 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=bronze_ingest">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=bronze_ingest">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -8160,6 +8304,140 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>26/05/24 19:28:29 WARN FileStreamSink: Assume no metadata directory. Error while looking for metadata directory in the path: data/project/raw/*.csv.
+java.io.FileNotFoundException: File data/project/raw/*.csv does not exist
+	at org.apache.hadoop.fs.RawLocalFileSystem.deprecatedGetFileStatus(RawLocalFileSystem.java:917)
+	at org.apache.hadoop.fs.RawLocalFileSystem.getFileLinkStatusInternal(RawLocalFileSystem.java:1238)
+	at org.apache.hadoop.fs.RawLocalFileSystem.getFileStatus(RawLocalFileSystem.java:907)
+	at org.apache.hadoop.fs.FilterFileSystem.getFileStatus(FilterFileSystem.java:462)
+	at org.apache.spark.sql.execution.streaming.FileStreamSink$.hasMetadata(FileStreamSink.scala:56)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:381)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.org$apache$spark$sql$catalyst$analysis$ResolveDataSource$$loadV1BatchSource(ResolveDataSource.scala:143)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.$anonfun$applyOrElse$2(ResolveDataSource.scala:61)
+	at scala.Option.getOrElse(Option.scala:201)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.applyOrElse(ResolveDataSource.scala:61)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource$$anonfun$apply$1.applyOrElse(ResolveDataSource.scala:45)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.$anonfun$resolveOperatorsUpWithPruning$3(AnalysisHelper.scala:139)
+	at org.apache.spark.sql.catalyst.trees.CurrentOrigin$.withOrigin(origin.scala:86)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.$anonfun$resolveOperatorsUpWithPruning$1(AnalysisHelper.scala:139)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.allowInvokingTransformsInAnalyzer(AnalysisHelper.scala:416)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUpWithPruning(AnalysisHelper.scala:135)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUpWithPruning$(AnalysisHelper.scala:131)
+	at org.apache.spark.sql.catalyst.plans.logical.LogicalPlan.resolveOperatorsUpWithPruning(LogicalPlan.scala:37)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUp(AnalysisHelper.scala:112)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper.resolveOperatorsUp$(AnalysisHelper.scala:111)
+	at org.apache.spark.sql.catalyst.plans.logical.LogicalPlan.resolveOperatorsUp(LogicalPlan.scala:37)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.apply(ResolveDataSource.scala:45)
+	at org.apache.spark.sql.catalyst.analysis.ResolveDataSource.apply(ResolveDataSource.scala:43)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$2(RuleExecutor.scala:242)
+	at scala.collection.LinearSeqOps.foldLeft(LinearSeq.scala:183)
+	at scala.collection.LinearSeqOps.foldLeft$(LinearSeq.scala:179)
+	at scala.collection.immutable.List.foldLeft(List.scala:79)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$1(RuleExecutor.scala:239)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$execute$1$adapted(RuleExecutor.scala:231)
+	at scala.collection.immutable.List.foreach(List.scala:334)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.execute(RuleExecutor.scala:231)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.org$apache$spark$sql$catalyst$analysis$Analyzer$$executeSameContext(Analyzer.scala:340)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$execute$1(Analyzer.scala:336)
+	at org.apache.spark.sql.catalyst.analysis.AnalysisContext$.withNewAnalysisContext(Analyzer.scala:234)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.execute(Analyzer.scala:336)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.execute(Analyzer.scala:299)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.$anonfun$executeAndTrack$1(RuleExecutor.scala:201)
+	at org.apache.spark.sql.catalyst.QueryPlanningTracker$.withTracker(QueryPlanningTracker.scala:89)
+	at org.apache.spark.sql.catalyst.rules.RuleExecutor.executeAndTrack(RuleExecutor.scala:201)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.resolveInFixedPoint(HybridAnalyzer.scala:190)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.$anonfun$apply$1(HybridAnalyzer.scala:76)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.withTrackedAnalyzerBridgeState(HybridAnalyzer.scala:111)
+	at org.apache.spark.sql.catalyst.analysis.resolver.HybridAnalyzer.apply(HybridAnalyzer.scala:71)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.$anonfun$executeAndCheck$1(Analyzer.scala:330)
+	at org.apache.spark.sql.catalyst.plans.logical.AnalysisHelper$.markInAnalyzer(AnalysisHelper.scala:423)
+	at org.apache.spark.sql.catalyst.analysis.Analyzer.executeAndCheck(Analyzer.scala:330)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$lazyAnalyzed$2(QueryExecution.scala:110)
+	at org.apache.spark.sql.catalyst.QueryPlanningTracker.measurePhase(QueryPlanningTracker.scala:148)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$2(QueryExecution.scala:278)
+	at org.apache.spark.sql.execution.QueryExecution$.withInternalError(QueryExecution.scala:654)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$executePhase$1(QueryExecution.scala:278)
+	at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:804)
+	at org.apache.spark.sql.execution.QueryExecution.executePhase(QueryExecution.scala:277)
+	at org.apache.spark.sql.execution.QueryExecution.$anonfun$lazyAnalyzed$1(QueryExecution.scala:110)
+	at scala.util.Try$.apply(Try.scala:217)
+	at org.apache.spark.util.Utils$.doTryWithCallerStacktrace(Utils.scala:1378)
+	at org.apache.spark.util.LazyTry.tryT$lzycompute(LazyTry.scala:46)
+	at org.apache.spark.util.LazyTry.tryT(LazyTry.scala:46)
+	at org.apache.spark.util.LazyTry.get(LazyTry.scala:58)
+	at org.apache.spark.sql.execution.QueryExecution.analyzed(QueryExecution.scala:121)
+	at org.apache.spark.sql.execution.QueryExecution.assertAnalyzed(QueryExecution.scala:80)
+	at org.apache.spark.sql.classic.Dataset$.$anonfun$ofRows$1(Dataset.scala:115)
+	at org.apache.spark.sql.SparkSession.withActive(SparkSession.scala:804)
+	at org.apache.spark.sql.classic.Dataset$.ofRows(Dataset.scala:113)
+	at org.apache.spark.sql.classic.DataFrameReader.load(DataFrameReader.scala:109)
+	at org.apache.spark.sql.classic.DataFrameReader.load(DataFrameReader.scala:58)
+	at org.apache.spark.sql.DataFrameReader.csv(DataFrameReader.scala:392)
+	at org.apache.spark.sql.classic.DataFrameReader.csv(DataFrameReader.scala:259)
+	at org.apache.spark.sql.classic.DataFrameReader.csv(DataFrameReader.scala:58)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:75)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:52)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:184)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:108)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Bronze rows     : 1,000,000
+Bronze Parquet  : 44.72 MB
+Raw CSV         : 79.39 MB
+Ingestion time  : 6.37 s
+  [METRIC] etl/bronze: row_count = 1000000  (raw ingestion)
+  [METRIC] etl/bronze: parquet_mb = 44.72  (bronze Parquet footprint)
+  [METRIC] etl/bronze: csv_mb = 79.39  (raw CSV baseline)
+  [METRIC] etl/bronze: duration_sec = 6.37  (bronze write time)
+root
+ |-- icao24: string (nullable = true)
+ |-- callsign: string (nullable = true)
+ |-- estdepartureairport: string (nullable = true)
+ |-- estarrivalairport: string (nullable = true)
+ |-- firstseen: string (nullable = true)
+ |-- lastseen: string (nullable = true)
+ |-- day: string (nullable = true)
+ |-- estdepartureairporthorizdistance: string (nullable = true)
+ |-- estdepartureairportvertdistance: string (nullable = true)
+ |-- estarrivalairporthorizdistance: string (nullable = true)
+ |-- estarrivalairportvertdistance: string (nullable = true)
+ |-- departureairportcandidatescount: string (nullable = true)
+ |-- arrivalairportcandidatescount: string (nullable = true)
+
++------+--------+-------------------+-----------------+----------+----------+----------+--------------------------------+-------------------------------+------------------------------+-----------------------------+-------------------------------+-----------------------------+
+|icao24|callsign|estdepartureairport|estarrivalairport|firstseen |lastseen  |day       |estdepartureairporthorizdistance|estdepartureairportvertdistance|estarrivalairporthorizdistance|estarrivalairportvertdistance|departureairportcandidatescount|arrivalairportcandidatescount|
++------+--------+-------------------+-----------------+----------+----------+----------+--------------------------------+-------------------------------+------------------------------+-----------------------------+-------------------------------+-----------------------------+
+|1b8901|ACA3911 |EPWA               |EDDM             |1682395489|1682445554|1682377200|33118                           |9863                           |1739                          |9195                         |2                              |5                            |
+|643c16|AAL5981 |EPWA               |VHHH             |1672807726|1672855279|1672786800|22541                           |9891                           |17335                         |711                          |4                              |5                            |
+|31acfd|BAW1754 |LKPR               |RJTT             |1700309400|1700349037|1700262000|24911                           |4554                           |29714                         |5977                         |2                              |3                            |
+|a8374e|SWA9225 |EPWA               |KATL             |1702690558|1702732278|1702681200|14392                           |5313                           |3665                          |3752                         |1                              |3                            |
+|a6e743|BAW9297 |EKCH               |OMDB             |1697624845|1697640579|1697583600|35322                           |4304                           |48956                         |9577                         |4                              |5                            |
++------+--------+-------------------+-----------------+----------+----------+----------+--------------------------------+-------------------------------+------------------------------+-----------------------------+-------------------------------+-----------------------------+
+only showing top 5 rows
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=37b77b2f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8179,12 +8457,12 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=silver">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=silver">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">t0</span>     <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -8263,6 +8541,91 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>26/05/24 19:28:35 WARN SparkStringUtils: Truncated the string representation of a plan since it was too large. This behavior can be adjusted by setting 'spark.sql.debug.maxToStringFields'.
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_silver.txt
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Silver rows      : 1,000,000
+Silver Parquet   : 50.1 MB
+Silver duration  : 9.23 s
+Rows dropped     : 0  (0.0%)
+  [METRIC] etl/silver: row_count = 1000000  (after cleaning &amp; dedup)
+  [METRIC] etl/silver: parquet_mb = 50.1  (silver Parquet footprint)
+  [METRIC] etl/silver: rows_dropped = 0  (contract violations + dedup)
+  [METRIC] etl/silver: duration_sec = 9.23  ()
+root
+ |-- icao24: string (nullable = true)
+ |-- callsign: string (nullable = true)
+ |-- dep_airport: string (nullable = true)
+ |-- arr_airport: string (nullable = true)
+ |-- firstseen: long (nullable = true)
+ |-- lastseen: long (nullable = true)
+ |-- day: long (nullable = true)
+ |-- event_ts: timestamp (nullable = true)
+ |-- flight_duration_sec: long (nullable = true)
+ |-- dep_horiz_m: integer (nullable = true)
+ |-- dep_vert_m: integer (nullable = true)
+ |-- arr_horiz_m: integer (nullable = true)
+ |-- arr_vert_m: integer (nullable = true)
+ |-- dep_cand: integer (nullable = true)
+ |-- arr_cand: integer (nullable = true)
+
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 15:==============&gt;                                           (2 + 6) / 8]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>+------+--------+-----------+-----------+----------+----------+----------+-------------------+-------------------+-----------+----------+-----------+----------+--------+--------+
+|icao24|callsign|dep_airport|arr_airport|firstseen |lastseen  |day       |event_ts           |flight_duration_sec|dep_horiz_m|dep_vert_m|arr_horiz_m|arr_vert_m|dep_cand|arr_cand|
++------+--------+-----------+-----------+----------+----------+----------+-------------------+-------------------+-----------+----------+-----------+----------+--------+--------+
+|000153|SWA8502 |WSSS       |OMDB       |1700496061|1700543961|1700434800|2023-11-20 17:01:01|47900              |9124       |4333      |13745      |4060      |1       |1       |
+|000184|UAL4265 |LFPG       |OMDB       |1698820754|1698846701|1698793200|2023-11-01 07:39:14|25947              |33767      |1984      |4705       |5252      |4       |2       |
+|0001f4|ACA8578 |KLAX       |EKCH       |1673979633|1674012741|1673910000|2023-01-17 19:20:33|33108              |9548       |1970      |14564      |7801      |4       |5       |
+|000266|UAL8808 |KORD       |EKCH       |1703335141|1703380852|1703286000|2023-12-23 13:39:01|45711              |30156      |9207      |6773       |9925      |2       |3       |
+|000322|QTR3099 |LOWW       |KDEN       |1696785314|1696823477|1696719600|2023-10-08 19:15:14|38163              |20822      |1441      |44017      |5566      |2       |1       |
++------+--------+-----------+-----------+----------+----------+----------+-------------------+-------------------+-----------+----------+-----------+----------+--------+--------+
+only showing top 5 rows
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e4e8ee68">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8281,12 +8644,12 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=gold">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=gold">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [7]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">t0</span>   <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -8366,6 +8729,98 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_gold_routes.txt
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_gold_daily.txt
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_gold_aircraft.txt
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Gold written in  : 9.92 s
+Gold total MB    : 35.62
+Ratio vs raw CSV : 0.449  (SLO ≤ 0.60)
+
+Top routes:
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 51:&gt;                                                         (0 + 8) / 8]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>+-----------+-----------+---------+------------------+----------------+----------------+-------------------+-------------------+--------------+
+|dep_airport|arr_airport|n_flights|avg_duration_sec  |min_duration_sec|max_duration_sec|stddev_duration_sec|n_distinct_aircraft|avg_duration_h|
++-----------+-----------+---------+------------------+----------------+----------------+-------------------+-------------------+--------------+
+|KDEN       |EFHK       |1115     |27810.0           |1800            |53999           |15001.609328988843 |1115               |7.73          |
+|KDFW       |LSZH       |1102     |27969.24500907441 |1807            |53921           |14902.158844933962 |1102               |7.77          |
+|YSSY       |KDFW       |1096     |27543.49087591241 |1892            |53990           |14971.302635525166 |1096               |7.65          |
+|EDDM       |KATL       |1092     |27950.25183150183 |1873            |53994           |15003.983169579382 |1092               |7.76          |
+|EGKK       |EKCH       |1086     |27735.100368324125|1809            |53981           |15249.882507791253 |1086               |7.7           |
+|EDDM       |LPPT       |1085     |28056.0599078341  |1862            |53966           |15085.642003686218 |1085               |7.79          |
+|LFPO       |KDEN       |1084     |28035.771217712176|1804            |53976           |15462.833946998486 |1084               |7.79          |
+|LIRF       |VHHH       |1081     |28364.63367252544 |1815            |53982           |14960.516497537355 |1081               |7.88          |
+|LEMD       |KJFK       |1080     |27349.20648148148 |1817            |53961           |14886.4809883296   |1080               |7.6           |
+|EHAM       |EGLL       |1079     |27355.007414272473|1844            |53994           |14894.425876080373 |1079               |7.6           |
++-----------+-----------+---------+------------------+----------------+----------------+-------------------+-------------------+--------------+
+only showing top 10 rows
+  [METRIC] etl/gold: duration_sec = 9.92  ()
+  [METRIC] etl/gold: parquet_mb = 35.62  ()
+  [METRIC] etl/gold: storage_ratio = 0.449  (SLO ≤ 0.60 → PASS)
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8a8d7be1">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8382,12 +8837,12 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=streaming_prep">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=streaming_prep">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [9]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Prepare landing zone — drip a small slice of silver as streaming source</span>
@@ -8425,12 +8880,25 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=streaming_run">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Landing zone populated with 3 files.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=streaming_run">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Structured Streaming pipeline</span>
@@ -8457,7 +8925,7 @@ Schema: all strings at bronze layer — no coercions.</p>
     <span class="o">.</span><span class="n">agg</span><span class="p">(</span>
         <span class="n">F</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">"*"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"n_flights"</span><span class="p">),</span>
         <span class="n">F</span><span class="o">.</span><span class="n">avg</span><span class="p">(</span><span class="s2">"flight_duration_sec"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"avg_duration_sec"</span><span class="p">),</span>
-        <span class="n">F</span><span class="o">.</span><span class="n">countDistinct</span><span class="p">(</span><span class="s2">"icao24"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"n_aircraft"</span><span class="p">)</span>
+        <span class="n">F</span><span class="o">.</span><span class="n">approx_count_distinct</span><span class="p">(</span><span class="s2">"icao24"</span><span class="p">)</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s2">"n_aircraft"</span><span class="p">)</span>
     <span class="p">)</span>
 <span class="p">)</span>
 
@@ -8493,6 +8961,93 @@ Schema: all strings at bronze layer — no coercions.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>26/05/24 19:29:23 WARN ResolveWriteToStream: spark.sql.adaptive.enabled is not supported in streaming DataFrames/Datasets and will be disabled.
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Streaming query running for 90s ...
+{
+  "id": "c8ccbbbc-5848-4c94-a2a3-af4934d23590",
+  "runId": "e14f36a8-38e3-47eb-981d-070198ab334c",
+  "name": null,
+  "timestamp": "2026-05-24T17:30:30.000Z",
+  "batchId": 3,
+  "batchDuration": 5,
+  "durationMs": {
+    "triggerExecution": 5,
+    "latestOffset": 4
+  },
+  "eventTime": {
+    "watermark": "2023-12-31T17:45:42.000Z"
+  },
+  "stateOperators": [
+    {
+      "operatorName": "stateStoreSave",
+      "numRowsTotal": 1,
+      "numRowsUpdated": 0,
+      "numRowsRemoved": 0,
+      "allUpdatesTimeMs": 0,
+      "allRemovalsTimeMs": 0,
+      "commitTimeMs": 449,
+      "memoryUsedBytes": 69704,
+      "numRowsDroppedByWatermark": 0,
+      "numShufflePartitions": 8,
+      "numStateStoreInstances": 8,
+      "customMetrics": {
+        "stateOnCurrentVersionSizeBytes": 1608,
+        "loadedMapCacheHitCount": 32,
+        "loadedMapCacheMissCount": 0
+      }
+    }
+  ],
+  "sources": [
+    {
+      "description": "FileStreamSource[file:/home/maxence/Documents/DE2_Data_Engineering/data/project/landing]",
+      "startOffset": "{\"logOffset\":2}",
+      "endOffset": "{\"logOffset\":2}",
+      "latestOffset": "None",
+      "numInputRows": 0,
+      "inputRowsPerSecond": 0.0,
+      "processedRowsPerSecond": 0.0,
+      "metrics": {}
+    }
+  ],
+  "sink": {
+    "description": "FileSink[file:/home/maxence/Documents/DE2_Data_Engineering/outputs/project/streaming]",
+    "numOutputRows": -1,
+    "metrics": {}
+  },
+  "numInputRows": 0,
+  "inputRowsPerSecond": 0.0,
+  "processedRowsPerSecond": 0.0,
+  "observedMetrics": {}
+}
+  [METRIC] streaming/windowed_agg: num_input_rows = 0  (lastProgress)
+  [METRIC] streaming/windowed_agg: processing_time_ms = 5  ()
+Streaming output: 0.15 MB
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>26/05/24 19:30:54 WARN DAGScheduler: Failed to cancel job group e14f36a8-38e3-47eb-981d-070198ab334c. Cannot find active jobs for it.
+26/05/24 19:30:54 WARN DAGScheduler: Failed to cancel job group e14f36a8-38e3-47eb-981d-070198ab334c. Cannot find active jobs for it.
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=25a6bf2a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8507,12 +9062,12 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=text_pipeline">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=text_pipeline">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [19]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">t0_text</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -8585,44 +9140,91 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=text_storage">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Corpus documents: 1,000,000
+  [PLAN] Saved → proof//plan_index_build.txt
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Unique terms     : 190,718
+Index build time : 18.31 s
+  [METRIC] text/inverted_index: unique_terms = 190718  ()
+  [METRIC] text/inverted_index: build_duration_s = 18.31  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>IOPub data rate exceeded.                                                       
+The notebook server will temporarily stop sending output
+to the client in order to avoid crashing it.
+To change this limit, set the config variable
+`--NotebookApp.iopub_data_rate_limit`.
+
+Current values:
+NotebookApp.iopub_data_rate_limit=1000000.0 (bytes/sec)
+NotebookApp.rate_limit_window=3.0 (secs)
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=text_storage">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [22]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Storage footprint comparison: Parquet vs CSV</span>
-<span class="n">size_index_parquet_mb</span> <span class="o">=</span> <span class="n">parquet_size_mb</span><span class="p">(</span><span class="n">TEXT_OUT</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">TEXT_CSV</span> <span class="o">=</span> <span class="s2">"outputs/project/text_csv"</span>
 
-<span class="c1"># Write index to CSV for comparison</span>
-<span class="n">TEXT_CSV</span> <span class="o">=</span> <span class="s2">"outputs/project/text_csv"</span>
-<span class="n">inverted_index</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">)</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">TEXT_CSV</span><span class="p">)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">g</span>
-<span class="n">size_index_csv_mb</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
-    <span class="nb">sum</span><span class="p">(</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">g</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">TEXT_CSV</span><span class="si">}</span><span class="s2">/*.csv"</span><span class="p">))</span> <span class="o">/</span> <span class="mi">1_048_576</span><span class="p">,</span> <span class="mi">2</span>
-<span class="p">)</span>
-
-<span class="n">footprint_ratio</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">size_index_parquet_mb</span> <span class="o">/</span> <span class="n">size_index_csv_mb</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">size_index_csv_mb</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Index Parquet : </span><span class="si">{</span><span class="n">size_index_parquet_mb</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Index CSV     : </span><span class="si">{</span><span class="n">size_index_csv_mb</span><span class="si">}</span><span class="s2"> MB"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Ratio P/CSV   : </span><span class="si">{</span><span class="n">footprint_ratio</span><span class="si">}</span><span class="s2">  (SLO ≤ 0.60)"</span><span class="p">)</span>
-
-<span class="n">log_metric</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"footprint"</span><span class="p">,</span> <span class="s2">"parquet_mb"</span><span class="p">,</span>    <span class="n">size_index_parquet_mb</span><span class="p">)</span>
-<span class="n">log_metric</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"footprint"</span><span class="p">,</span> <span class="s2">"csv_mb"</span><span class="p">,</span>         <span class="n">size_index_csv_mb</span><span class="p">)</span>
-<span class="n">log_metric</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"footprint"</span><span class="p">,</span> <span class="s2">"parquet_ratio"</span><span class="p">,</span>  <span class="n">footprint_ratio</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"SLO ≤ 0.60"</span><span class="p">)</span>
+<span class="n">inverted_index</span> \
+    <span class="o">.</span><span class="n">withColumn</span><span class="p">(</span><span class="s2">"doc_ids"</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">concat_ws</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"doc_ids"</span><span class="p">)))</span> \
+    <span class="o">.</span><span class="n">write</span> \
+    <span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">option</span><span class="p">(</span><span class="s2">"header"</span><span class="p">,</span> <span class="s2">"true"</span><span class="p">)</span> \
+    <span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">TEXT_CSV</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=text_query">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=text_query">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [23]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Query latency benchmark (warm cache)</span>
@@ -8647,6 +9249,37 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_query.txt
+
+Query latency benchmarks:
+  'flight': 232.7 ms | docs=0 | PASS
+  [METRIC] text/query_latency: latency_ms_flight = 232.7  (SLO ≤ 2000 ms → PASS)
+  'airport': 180.2 ms | docs=0 | PASS
+  [METRIC] text/query_latency: latency_ms_airport = 180.2  (SLO ≤ 2000 ms → PASS)
+  'delay': 126.0 ms | docs=0 | PASS
+  [METRIC] text/query_latency: latency_ms_delay = 126.0  (SLO ≤ 2000 ms → PASS)
+  'arrival': 82.3 ms | docs=0 | PASS
+  [METRIC] text/query_latency: latency_ms_arrival = 82.3  (SLO ≤ 2000 ms → PASS)
+  'departure': 48.1 ms | docs=0 | PASS
+  [METRIC] text/query_latency: latency_ms_departure = 48.1  (SLO ≤ 2000 ms → PASS)
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5329493a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -8663,12 +9296,12 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=clustering_features">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=clustering_features">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [24]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pyspark.ml.feature</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorAssembler</span><span class="p">,</span> <span class="n">StandardScaler</span>
@@ -8704,12 +9337,38 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=clustering_sweep">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 65:&gt;                                                         (0 + 8) / 8]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Feature rows: 1,000,000
+  [METRIC] clustering/features: row_count = 1000000  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 65:=============================&gt;                            (4 + 4) / 8]                                                                                </pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=clustering_sweep">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [26]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── KMeans sweep: k × seed</span>
@@ -8726,7 +9385,7 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
     <span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="n">seeds</span><span class="p">:</span>
         <span class="n">t_k</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">km</span>  <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">maxIter</span><span class="o">=</span><span class="n">CFG</span><span class="p">[</span><span class="s2">"iterative"</span><span class="p">][</span><span class="s2">"max_iter"</span><span class="p">],</span>
-                     <span class="n">featuresCol</span><span class="o">=</span><span class="s2">"features"</span><span class="p">,</span> <span class="n">predictionCol</span><span class="o">=</span><span class="s2">"cluster"</span><span class="p">)</span>
+                     <span class="n">featuresCol</span><span class="o">=</span><span class="s2">"features"</span><span class="p">,</span> <span class="n">predictionCol</span><span class="o">=</span><span class="s2">"prediction"</span><span class="p">)</span>
         <span class="n">model</span>    <span class="o">=</span> <span class="n">km</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_scaled</span><span class="p">)</span>
         <span class="n">preds</span>    <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_scaled</span><span class="p">)</span>
         <span class="n">sil</span>      <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
@@ -8760,12 +9419,214 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=clustering_partition">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_iterative_before.txt
+  k= 3 seed=42: silhouette=0.1649 cost=5794392 dur=8.51s
+  [METRIC] clustering/k3_seed42: silhouette = 0.1649  ()
+  [METRIC] clustering/k3_seed42: cost = 5794392.13  ()
+  k= 3 seed=123: silhouette=0.1658 cost=5795539 dur=7.76s
+  [METRIC] clustering/k3_seed123: silhouette = 0.1658  ()
+  [METRIC] clustering/k3_seed123: cost = 5795539.23  ()
+  k= 3 seed=456: silhouette=0.1647 cost=5796480 dur=7.85s
+  [METRIC] clustering/k3_seed456: silhouette = 0.1647  ()
+  [METRIC] clustering/k3_seed456: cost = 5796480.27  ()
+  k=3: mean_silhouette=0.1652 ± 0.0006
+  [METRIC] clustering/k3: mean_silhouette = 0.1652  (std=0.0006)
+  k= 5 seed=42: silhouette=0.1712 cost=5160325 dur=8.58s
+  [METRIC] clustering/k5_seed42: silhouette = 0.1712  ()
+  [METRIC] clustering/k5_seed42: cost = 5160325.33  ()
+  k= 5 seed=123: silhouette=0.1707 cost=5163226 dur=9.5s
+  [METRIC] clustering/k5_seed123: silhouette = 0.1707  ()
+  [METRIC] clustering/k5_seed123: cost = 5163225.76  ()
+  k= 5 seed=456: silhouette=0.1687 cost=5157896 dur=10.95s
+  [METRIC] clustering/k5_seed456: silhouette = 0.1687  ()
+  [METRIC] clustering/k5_seed456: cost = 5157895.78  ()
+  k=5: mean_silhouette=0.1702 ± 0.0013
+  [METRIC] clustering/k5: mean_silhouette = 0.1702  (std=0.0013)
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 533:&gt;                                                        (0 + 8) / 8]                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k= 7 seed=42: silhouette=0.1761 cost=4721068 dur=13.21s
+  [METRIC] clustering/k7_seed42: silhouette = 0.1761  ()
+  [METRIC] clustering/k7_seed42: cost = 4721068.0  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k= 7 seed=123: silhouette=0.1748 cost=4723942 dur=11.07s
+  [METRIC] clustering/k7_seed123: silhouette = 0.1748  ()
+  [METRIC] clustering/k7_seed123: cost = 4723941.9  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k= 7 seed=456: silhouette=0.1770 cost=4716073 dur=10.98s
+  [METRIC] clustering/k7_seed456: silhouette = 0.177  ()
+  [METRIC] clustering/k7_seed456: cost = 4716072.99  ()
+  k=7: mean_silhouette=0.176 ± 0.0011
+  [METRIC] clustering/k7: mean_silhouette = 0.176  (std=0.0011)
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k=10 seed=42: silhouette=0.1793 cost=4267815 dur=11.68s
+  [METRIC] clustering/k10_seed42: silhouette = 0.1793  ()
+  [METRIC] clustering/k10_seed42: cost = 4267814.95  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k=10 seed=123: silhouette=0.1751 cost=4281883 dur=11.72s
+  [METRIC] clustering/k10_seed123: silhouette = 0.1751  ()
+  [METRIC] clustering/k10_seed123: cost = 4281883.26  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k=10 seed=456: silhouette=0.1781 cost=4275130 dur=11.68s
+  [METRIC] clustering/k10_seed456: silhouette = 0.1781  ()
+  [METRIC] clustering/k10_seed456: cost = 4275129.9  ()
+  k=10: mean_silhouette=0.1775 ± 0.0021
+  [METRIC] clustering/k10: mean_silhouette = 0.1775  (std=0.0021)
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k=15 seed=42: silhouette=0.1941 cost=3712537 dur=13.24s
+  [METRIC] clustering/k15_seed42: silhouette = 0.1941  ()
+  [METRIC] clustering/k15_seed42: cost = 3712536.82  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k=15 seed=123: silhouette=0.1937 cost=3719437 dur=13.46s
+  [METRIC] clustering/k15_seed123: silhouette = 0.1937  ()
+  [METRIC] clustering/k15_seed123: cost = 3719437.11  ()
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 1005:&gt;                                                       (0 + 8) / 8]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  k=15 seed=456: silhouette=0.1970 cost=3699694 dur=13.49s
+  [METRIC] clustering/k15_seed456: silhouette = 0.197  ()
+  [METRIC] clustering/k15_seed456: cost = 3699694.32  ()
+  k=15: mean_silhouette=0.195 ± 0.0018
+  [METRIC] clustering/k15: mean_silhouette = 0.195  (std=0.0018)
+
+Best config: k=15, seed=456, silhouette=0.197
+Silhouette SLO (≥ 0.25): FAIL
+  [METRIC] clustering/best: best_silhouette = 0.197  (k=15 FAIL)
+ k  seed  silhouette       cost  duration_s
+ 3    42      0.1649 5794392.13        8.51
+ 3   123      0.1658 5795539.23        7.76
+ 3   456      0.1647 5796480.27        7.85
+ 5    42      0.1712 5160325.33        8.58
+ 5   123      0.1707 5163225.76        9.50
+ 5   456      0.1687 5157895.78       10.95
+ 7    42      0.1761 4721068.00       13.21
+ 7   123      0.1748 4723941.90       11.07
+ 7   456      0.1770 4716072.99       10.98
+10    42      0.1793 4267814.95       11.68
+10   123      0.1751 4281883.26       11.72
+10   456      0.1781 4275129.90       11.68
+15    42      0.1941 3712536.82       13.24
+15   123      0.1937 3719437.11       13.46
+15   456      0.1970 3699694.32       13.49
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=clustering_partition">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [27]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Partitioning experiment: before vs after repartition</span>
@@ -8801,45 +9662,27 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=clustering_drift">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Drift detection: cluster centroids across two half-year windows</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="n">MID_DAY</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span><span class="p">())</span>
-
-<span class="n">df_h1</span> <span class="o">=</span> <span class="n">df_scaled</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"day"</span><span class="p">)</span> <span class="o">&lt;</span>  <span class="n">MID_DAY</span><span class="p">)</span>
-<span class="n">df_h2</span> <span class="o">=</span> <span class="n">df_scaled</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">F</span><span class="o">.</span><span class="n">col</span><span class="p">(</span><span class="s2">"day"</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">MID_DAY</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">df_h1</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">10</span> <span class="ow">and</span> <span class="n">df_h2</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-    <span class="n">km_drift</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">best_k</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">maxIter</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">featuresCol</span><span class="o">=</span><span class="s2">"features"</span><span class="p">)</span>
-    <span class="n">m_h1</span> <span class="o">=</span> <span class="n">km_drift</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_h1</span><span class="p">)</span>
-    <span class="n">m_h2</span> <span class="o">=</span> <span class="n">km_drift</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_h2</span><span class="p">)</span>
-
-    <span class="n">c1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">toArray</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">m_h1</span><span class="o">.</span><span class="n">clusterCenters</span><span class="p">()])</span>
-    <span class="n">c2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">toArray</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">m_h2</span><span class="o">.</span><span class="n">clusterCenters</span><span class="p">()])</span>
-
-    <span class="c1"># Centroid shift: mean Euclidean distance between matched centroids</span>
-    <span class="n">dists</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">c1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">c2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">c1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">c2</span><span class="p">)))]</span>
-    <span class="n">mean_drift</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dists</span><span class="p">)),</span> <span class="mi">4</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean centroid drift H1→H2: </span><span class="si">{</span><span class="n">mean_drift</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">log_metric</span><span class="p">(</span><span class="s2">"clustering"</span><span class="p">,</span> <span class="s2">"drift"</span><span class="p">,</span> <span class="s2">"mean_centroid_drift"</span><span class="p">,</span> <span class="n">mean_drift</span><span class="p">,</span> <span class="s2">"H1→H2"</span><span class="p">)</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"Not enough data in one window for drift detection — skipping."</span><span class="p">)</span>
-
-<span class="c1"># ── Save best model predictions</span>
-<span class="n">best_km</span>    <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">best_k</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">best_row</span><span class="o">.</span><span class="n">seed</span><span class="p">),</span> <span class="n">maxIter</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">featuresCol</span><span class="o">=</span><span class="s2">"features"</span><span class="p">)</span>
-<span class="n">best_model</span> <span class="o">=</span> <span class="n">best_km</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_scaled</span><span class="p">)</span>
-<span class="n">df_clustered</span> <span class="o">=</span> <span class="n">best_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_scaled</span><span class="p">)</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">"icao24"</span><span class="p">,</span> <span class="s2">"firstseen"</span><span class="p">,</span> <span class="s2">"cluster"</span><span class="p">)</span>
-<span class="n">df_clustered</span><span class="o">.</span><span class="n">write</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="s2">"overwrite"</span><span class="p">)</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">gold</span><span class="si">}</span><span class="s2">/clusters"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Cluster assignments saved → </span><span class="si">{</span><span class="n">gold</span><span class="si">}</span><span class="s2">/clusters"</span><span class="p">)</span>
-</pre></div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_iterative_after.txt
+Before repartition : 5.27s
+After repartition  : 5.84s
+Speedup            : 0.9x
+  [METRIC] clustering/partition_exp: before_dur_s = 5.27  ()
+  [METRIC] clustering/partition_exp: after_dur_s = 5.84  ()
+  [METRIC] clustering/partition_exp: speedup = 0.9  ()
+</pre>
 </div>
 </div>
 </div>
@@ -8865,12 +9708,12 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=llm_prep">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=llm_prep">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [29]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="n">t0_llm</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -8960,12 +9803,84 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=data_card">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>  [PLAN] Saved → proof//plan_llm_curation.txt
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>                                                                                </pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Before filters   : 1,000,000
+After filters    : 1,000,000
+Pass rate        : 100.00%  (SLO ≥ 80% → PASS)
+LLM Parquet MB   : 97.68
+Duration         : 20.83 s
+  [METRIC] llm/curation: n_before = 1000000  ()
+  [METRIC] llm/curation: n_after = 1000000  ()
+  [METRIC] llm/curation: pass_rate = 1.0  (SLO ≥ 0.80 → PASS)
+  [METRIC] llm/curation: parquet_mb = 97.68  ()
+  [METRIC] llm/curation: duration_sec = 20.83  ()
+root
+ |-- doc_id: string (nullable = false)
+ |-- text: string (nullable = false)
+ |-- dep_airport: string (nullable = true)
+ |-- arr_airport: string (nullable = true)
+ |-- event_ts: timestamp (nullable = true)
+ |-- source: string (nullable = false)
+ |-- version: string (nullable = false)
+ |-- curated_at: timestamp (nullable = false)
+ |-- content_hash: long (nullable = false)
+
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 1192:============================&gt;                           (4 + 4) / 8]</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>+-----------------+--------------------------------------------------------------------------------+-----------+-----------+-------------------+-----------------------------------+-------+--------------------------+--------------------+
+|           doc_id|                                                                            text|dep_airport|arr_airport|           event_ts|                             source|version|                curated_at|        content_hash|
++-----------------+--------------------------------------------------------------------------------+-----------+-----------+-------------------+-----------------------------------+-------+--------------------------+--------------------+
+|918ee7_1691575673|Flight ACA6728 operated aircraft 918ee7 departed LIRF bound for EKCH. Departu...|       LIRF|       EKCH|2023-08-09 12:07:53|OpenSky Network - ADS-B flight data|   v1.0|2026-05-24 19:42:05.944518|-9223277305577859286|
+|343a22_1676342415|Flight RYR3052 operated aircraft 343a22 departed KJFK bound for KDEN. Departu...|       KJFK|       KDEN|2023-02-14 03:40:15|OpenSky Network - ADS-B flight data|   v1.0|2026-05-24 19:42:05.944518|-9222658434684269882|
+|7947be_1676858476|Flight ACA9444 operated aircraft 7947be departed KDEN bound for KORD. Departu...|       KDEN|       KORD|2023-02-20 03:01:16|OpenSky Network - ADS-B flight data|   v1.0|2026-05-24 19:42:05.944518|-9222448712399989058|
++-----------------+--------------------------------------------------------------------------------+-----------+-----------+-------------------+-----------------------------------+-------+--------------------------+--------------------+
+only showing top 3 rows
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>[Stage 1192:===================================&gt;                    (5 + 3) / 8]                                                                                </pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=data_card">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [30]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Data Card</span>
@@ -9006,6 +9921,46 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+# Data Card — Aviation LLM-Ready Dataset
+
+| Field           | Value |
+|-----------------|-------|
+| Source          | OpenSky Network - ADS-B flight data |
+| Track           | D — Aviation / OpenSky |
+| Raw rows        | 1,000,000 |
+| Curated rows    | 1,000,000 |
+| Pass rate       | 100.00% |
+| Schema version  | v1.0 |
+| Intended use    | RAG / LLM fine-tuning for aviation domain |
+| Filters applied | NULL removal, min_length=50, ascii_ratio≥0.95, xxhash64 dedup |
+| Output format   | Parquet (snappy) |
+| Output size     | 97.68 MB |
+| Curated at      | 2026-05-24T19:42:26.757689 |
+
+## Schema
+- `doc_id`       STRING  — icao24_firstseen composite key
+- `text`         STRING  — natural language flight description
+- `dep_airport`  STRING  — ICAO departure airport code
+- `arr_airport`  STRING  — ICAO arrival airport code
+- `event_ts`     TIMESTAMP — flight start timestamp
+- `source`       STRING  — dataset source identifier
+- `version`      STRING  — schema version tag
+- `curated_at`   TIMESTAMP — curation run timestamp
+- `content_hash` LONG    — xxhash64 for deduplication
+
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a5621326">
 <div class="jp-Cell-inputWrapper" tabindex="0">
@@ -9018,12 +9973,12 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=evidence">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=evidence">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [31]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -9060,12 +10015,126 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=final_slo_check">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Proof artifacts (10):
+  plan_gold_aircraft.txt  (4,880 bytes)
+  plan_gold_daily.txt  (5,742 bytes)
+  plan_gold_routes.txt  (6,132 bytes)
+  plan_index_build.txt  (7,914 bytes)
+  plan_iterative_after.txt  (13,376 bytes)
+  plan_iterative_before.txt  (7,549 bytes)
+  plan_llm_curation.txt  (12,412 bytes)
+  plan_query.txt  (1,756 bytes)
+  plan_silver.txt  (24,922 bytes)
+  query_progress.json  (1,522 bytes)
+
+Metrics log: project_metrics_log.csv
+         run_id      stage           task          metric_name  metric_value                       notes                  timestamp
+20260524_191734        etl         bronze            row_count  1000000.0000               raw ingestion 2026-05-24T19:18:08.752976
+20260524_191734        etl         bronze           parquet_mb       44.7200    bronze Parquet footprint 2026-05-24T19:18:08.760526
+20260524_191734        etl         bronze               csv_mb       79.3900            raw CSV baseline 2026-05-24T19:18:08.766045
+20260524_191734        etl         bronze         duration_sec        5.7400           bronze write time 2026-05-24T19:18:08.768619
+20260524_191734        etl         silver            row_count  1000000.0000      after cleaning &amp; dedup 2026-05-24T19:18:25.055951
+20260524_191734        etl         silver           parquet_mb       50.1000    silver Parquet footprint 2026-05-24T19:18:25.076989
+20260524_191734        etl         silver         rows_dropped        0.0000 contract violations + dedup 2026-05-24T19:18:25.080519
+20260524_191734        etl         silver         duration_sec       10.2100                         NaN 2026-05-24T19:18:25.083609
+20260524_191734        etl           gold         duration_sec       11.0200                         NaN 2026-05-24T19:18:43.725983
+20260524_191734        etl           gold           parquet_mb       35.6200                         NaN 2026-05-24T19:18:43.736305
+20260524_191734        etl           gold        storage_ratio        0.4490           SLO ≤ 0.60 → PASS 2026-05-24T19:18:43.739158
+20260524_192827        etl         bronze            row_count  1000000.0000               raw ingestion 2026-05-24T19:28:35.186575
+20260524_192827        etl         bronze           parquet_mb       44.7200    bronze Parquet footprint 2026-05-24T19:28:35.195335
+20260524_192827        etl         bronze               csv_mb       79.3900            raw CSV baseline 2026-05-24T19:28:35.197814
+20260524_192827        etl         bronze         duration_sec        6.3700           bronze write time 2026-05-24T19:28:35.199912
+20260524_192827        etl         silver            row_count  1000000.0000      after cleaning &amp; dedup 2026-05-24T19:28:44.647878
+20260524_192827        etl         silver           parquet_mb       50.1000    silver Parquet footprint 2026-05-24T19:28:44.651724
+20260524_192827        etl         silver         rows_dropped        0.0000 contract violations + dedup 2026-05-24T19:28:44.654775
+20260524_192827        etl         silver         duration_sec        9.2300                         NaN 2026-05-24T19:28:44.656897
+20260524_192827        etl           gold         duration_sec        9.9200                         NaN 2026-05-24T19:28:57.961473
+20260524_192827        etl           gold           parquet_mb       35.6200                         NaN 2026-05-24T19:28:57.983117
+20260524_192827        etl           gold        storage_ratio        0.4490           SLO ≤ 0.60 → PASS 2026-05-24T19:28:57.986564
+20260524_192827  streaming   windowed_agg       num_input_rows        0.0000                lastProgress 2026-05-24T19:30:54.193171
+20260524_192827  streaming   windowed_agg   processing_time_ms        5.0000                         NaN 2026-05-24T19:30:54.196225
+20260524_192827       text inverted_index         unique_terms   190718.0000                         NaN 2026-05-24T19:34:18.289589
+20260524_192827       text inverted_index     build_duration_s       18.3100                         NaN 2026-05-24T19:34:18.314831
+20260524_192827       text  query_latency    latency_ms_flight      232.7000        SLO ≤ 2000 ms → PASS 2026-05-24T19:36:41.179579
+20260524_192827       text  query_latency   latency_ms_airport      180.2000        SLO ≤ 2000 ms → PASS 2026-05-24T19:36:41.375343
+20260524_192827       text  query_latency     latency_ms_delay      126.0000        SLO ≤ 2000 ms → PASS 2026-05-24T19:36:41.503988
+20260524_192827       text  query_latency   latency_ms_arrival       82.3000        SLO ≤ 2000 ms → PASS 2026-05-24T19:36:41.588960
+20260524_192827       text  query_latency latency_ms_departure       48.1000        SLO ≤ 2000 ms → PASS 2026-05-24T19:36:41.639710
+20260524_192827 clustering       features            row_count  1000000.0000                         NaN 2026-05-24T19:36:51.787601
+20260524_192827 clustering      k3_seed42           silhouette        0.1649                         NaN 2026-05-24T19:38:12.428770
+20260524_192827 clustering      k3_seed42                 cost  5794392.1300                         NaN 2026-05-24T19:38:12.441500
+20260524_192827 clustering     k3_seed123           silhouette        0.1658                         NaN 2026-05-24T19:38:20.209596
+20260524_192827 clustering     k3_seed123                 cost  5795539.2300                         NaN 2026-05-24T19:38:20.212265
+20260524_192827 clustering     k3_seed456           silhouette        0.1647                         NaN 2026-05-24T19:38:28.063949
+20260524_192827 clustering     k3_seed456                 cost  5796480.2700                         NaN 2026-05-24T19:38:28.077321
+20260524_192827 clustering             k3      mean_silhouette        0.1652                  std=0.0006 2026-05-24T19:38:28.088272
+20260524_192827 clustering      k5_seed42           silhouette        0.1712                         NaN 2026-05-24T19:38:36.674608
+20260524_192827 clustering      k5_seed42                 cost  5160325.3300                         NaN 2026-05-24T19:38:36.677337
+20260524_192827 clustering     k5_seed123           silhouette        0.1707                         NaN 2026-05-24T19:38:46.185655
+20260524_192827 clustering     k5_seed123                 cost  5163225.7600                         NaN 2026-05-24T19:38:46.190236
+20260524_192827 clustering     k5_seed456           silhouette        0.1687                         NaN 2026-05-24T19:38:57.156071
+20260524_192827 clustering     k5_seed456                 cost  5157895.7800                         NaN 2026-05-24T19:38:57.161655
+20260524_192827 clustering             k5      mean_silhouette        0.1702                  std=0.0013 2026-05-24T19:38:57.174526
+20260524_192827 clustering      k7_seed42           silhouette        0.1761                         NaN 2026-05-24T19:39:10.389893
+20260524_192827 clustering      k7_seed42                 cost  4721068.0000                         NaN 2026-05-24T19:39:10.395697
+20260524_192827 clustering     k7_seed123           silhouette        0.1748                         NaN 2026-05-24T19:39:21.479958
+20260524_192827 clustering     k7_seed123                 cost  4723941.9000                         NaN 2026-05-24T19:39:21.483483
+20260524_192827 clustering     k7_seed456           silhouette        0.1770                         NaN 2026-05-24T19:39:32.472913
+20260524_192827 clustering     k7_seed456                 cost  4716072.9900                         NaN 2026-05-24T19:39:32.476634
+20260524_192827 clustering             k7      mean_silhouette        0.1760                  std=0.0011 2026-05-24T19:39:32.487240
+20260524_192827 clustering     k10_seed42           silhouette        0.1793                         NaN 2026-05-24T19:39:44.166838
+20260524_192827 clustering     k10_seed42                 cost  4267814.9500                         NaN 2026-05-24T19:39:44.170503
+20260524_192827 clustering    k10_seed123           silhouette        0.1751                         NaN 2026-05-24T19:39:55.905520
+20260524_192827 clustering    k10_seed123                 cost  4281883.2600                         NaN 2026-05-24T19:39:55.908988
+20260524_192827 clustering    k10_seed456           silhouette        0.1781                         NaN 2026-05-24T19:40:07.600815
+20260524_192827 clustering    k10_seed456                 cost  4275129.9000                         NaN 2026-05-24T19:40:07.606354
+20260524_192827 clustering            k10      mean_silhouette        0.1775                  std=0.0021 2026-05-24T19:40:07.616834
+20260524_192827 clustering     k15_seed42           silhouette        0.1941                         NaN 2026-05-24T19:40:20.860699
+20260524_192827 clustering     k15_seed42                 cost  3712536.8200                         NaN 2026-05-24T19:40:20.864212
+20260524_192827 clustering    k15_seed123           silhouette        0.1937                         NaN 2026-05-24T19:40:34.339943
+20260524_192827 clustering    k15_seed123                 cost  3719437.1100                         NaN 2026-05-24T19:40:34.343610
+20260524_192827 clustering    k15_seed456           silhouette        0.1970                         NaN 2026-05-24T19:40:47.837951
+20260524_192827 clustering    k15_seed456                 cost  3699694.3200                         NaN 2026-05-24T19:40:47.841754
+20260524_192827 clustering            k15      mean_silhouette        0.1950                  std=0.0018 2026-05-24T19:40:47.852380
+20260524_192827 clustering           best      best_silhouette        0.1970                   k=15 FAIL 2026-05-24T19:40:47.862982
+20260524_192827 clustering  partition_exp         before_dur_s        5.2700                         NaN 2026-05-24T19:41:28.854142
+20260524_192827 clustering  partition_exp          after_dur_s        5.8400                         NaN 2026-05-24T19:41:28.857072
+20260524_192827 clustering  partition_exp              speedup        0.9000                         NaN 2026-05-24T19:41:28.859643
+20260524_192827        llm       curation             n_before  1000000.0000                         NaN 2026-05-24T19:42:05.909126
+20260524_192827        llm       curation              n_after  1000000.0000                         NaN 2026-05-24T19:42:05.922347
+20260524_192827        llm       curation            pass_rate        1.0000           SLO ≥ 0.80 → PASS 2026-05-24T19:42:05.925341
+20260524_192827        llm       curation           parquet_mb       97.6800                         NaN 2026-05-24T19:42:05.928374
+20260524_192827        llm       curation         duration_sec       20.8300                         NaN 2026-05-24T19:42:05.932070
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ACTION REQUIRED: Capture Spark UI screenshots
+  URL: http://max-HP-Laptop-14s-dq2xxx.lan:4040
+
+  Pages to screenshot:
+  • Jobs → save as proof/spark_ui_jobs.png
+  • Stages → save as proof/spark_ui_stages.png
+  • SQL/DataFrame tab → save as proof/spark_ui_sql.png
+  • Streaming tab → save as proof/spark_ui_streaming.png
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=final_slo_check">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [32]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ── Final SLO summary</span>
@@ -9107,7 +10176,54 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=teardown">
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL SLO SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ✓ PASS  Storage ratio vs raw CSV ≤ 0.60  (got 0.449)
+  ✓ PASS  LLM pass rate ≥ 0.80  (got 1.0)
+  ✗ FAIL  Best silhouette ≥ 0.25  (got 0.197)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=teardown">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [33]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Spark session stopped. Pipeline complete."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Spark session stopped. Pipeline complete.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a02c270c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -9115,8 +10231,7 @@ Comparison: Parquet vs CSV storage footprint + single-term query latency.</p>
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="n">spark</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Spark session stopped. Pipeline complete."</span><span class="p">)</span>
+<div class="highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 </div>
 </div>
