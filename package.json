@@ -1,15 +1,15 @@
 {
   "name": "@jackyzha0/quartz",
-  "description": "🌱 publish your digital garden and notes as a website",
+  "description": "ESIEE DE2 Data Engineering II project website",
   "private": true,
   "version": "4.5.2",
   "type": "module",
-  "author": "jackyzha0 <j.zhao2k19@gmail.com>",
+  "author": "ESIEE DE2 Team",
   "license": "MIT",
-  "homepage": "https://quartz.jzhao.xyz",
+  "homepage": "https://de2-1778.pages.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jackyzha0/quartz.git"
+    "url": "https://github.com/AmineSAAD-EDDINE/de2-website.git"
   },
   "scripts": {
     "quartz": "./quartz/bootstrap-cli.mjs",
