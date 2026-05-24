@@ -1,6 +1,11 @@
 ---
-title: Welcome to Quartz
+title: Maxence and Amine's Portfolio
+publish: true
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+>**Students:** Maxence DELEHELLE, Amine SAAD-EDDINE   
+>**Teacher:** Badr TAJINI     
+>**Academic year:** 2025–2026  
+>**Program:** Data & Applications - Engineering - (FD)   
+>**Course:** Data Engineering II 
+---
