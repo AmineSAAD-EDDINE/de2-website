@@ -10,6 +10,10 @@ publish: true
 >**Course:** Data Engineering II 
 ---
 
+## Dataset
+
+- [Dataset_Track_D_csv](https://drive.google.com/file/d/18DUKA_9A6jSs6UzWWTI9VteLPBK-_y-W/view?usp=sharing)
+
 ## Notebook
 
 - [DE2_Assignment1_Notebook_EN.ipynb](assignment1_esiee.ipynb)

@@ -10,9 +10,15 @@ publish: true
 >**Course:** Data Engineering II 
 ---
 
+## Dataset
+
+- [Dataset_Track_D_csv](https://drive.google.com/file/d/18DUKA_9A6jSs6UzWWTI9VteLPBK-_y-W/view?usp=sharing)
+
 ## Notebook
 
-- [DE2_Assignment2_Notebook_EN.ipynb](assignment2_esiee.ipynb)
+- [Voir le notebook HTML](/static/lab_2_assignement/assignment2_esiee.html)
+
+<iframe src="/static/lab_2_assignement/assignment2_esiee.html" style="width:100%;min-height:80vh;border:1px solid #ccc;"></iframe>
 
 ## Metrics log
 
