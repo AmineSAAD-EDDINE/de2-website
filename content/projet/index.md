@@ -10,6 +10,10 @@ publish: true
 >**Course:** Data Engineering II 
 ---
 
+## Data
+
+- [Drive folder](https://drive.google.com/drive/folders/1UXV9hT85LNkLDfvCcgsnJLUq6P9_30NK?usp=sharing)
+
 ## Notebook
 
 - [DE2_Project_Notebook_EN.ipynb](DE2_Project_Notebook_EN.md)
