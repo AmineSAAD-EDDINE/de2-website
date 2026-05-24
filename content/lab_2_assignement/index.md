@@ -16,7 +16,7 @@ publish: true
 
 ## Notebook
 
-- [Voir le notebook dédié](/lab_2_assignement/notebook)
+- [DE2_Assignment3_Notebook_EN.ipynb](assignment3_esiee.ipynb)
 
 ## Metrics log
 
