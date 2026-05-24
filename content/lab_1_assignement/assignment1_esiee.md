@@ -3,8 +3,6 @@ title: assignment1_esiee
 publish: true
 ---
 
-This page redirects to the rendered notebook HTML.
+This notebook is embedded directly into Quartz.
 
-<meta http-equiv="refresh" content="0;url=/static/lab_1_assignement/assignment1_esiee.html" />
-
-If you are not redirected automatically, click [here](/static/lab_1_assignement/assignment1_esiee.html).
+<iframe src="/static/lab_1_assignement/assignment1_esiee.html" style="width:100%;min-height:90vh;border:1px solid #ccc;"></iframe>

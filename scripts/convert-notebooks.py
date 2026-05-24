@@ -19,22 +19,20 @@ if not notebooks:
     raise SystemExit(0)
 
 
-def write_redirect_md(notebook_path: Path, html_relative_path: str) -> None:
+def write_embed_md(notebook_path: Path, html_relative_path: str) -> None:
     md_path = notebook_path.with_suffix(".md")
-    if md_path.exists():
-        return
-
     content = f"""---
 title: {notebook_path.stem}
 publish: true
 ---
 
-This page redirects to the rendered notebook HTML.
+This notebook is embedded directly into Quartz.
 
-<meta http-equiv=\"refresh\" content=\"0;url=/static/{html_relative_path}\" />
-
-If you are not redirected automatically, click [here](/static/{html_relative_path}).
+<iframe src=\"/static/{html_relative_path}\" style=\"width:100%;min-height:90vh;border:1px solid #ccc;\"></iframe>
 """
+    existing = md_path.read_text(encoding="utf-8") if md_path.exists() else None
+    if existing == content:
+        return
     md_path.write_text(content, encoding="utf-8")
 
 
@@ -91,7 +89,7 @@ for notebook in notebooks:
     if result.returncode != 0:
         raise SystemExit(result.returncode)
 
-    write_redirect_md(notebook, relative.as_posix())
+    write_embed_md(notebook, relative.as_posix())
 
 replace_ipynb_links()
 
