@@ -26,8 +26,6 @@ title: {notebook_path.stem}
 publish: true
 ---
 
-This notebook is embedded directly into Quartz.
-
 <iframe src=\"/static/{html_relative_path}\" style=\"width:100%;min-height:90vh;border:1px solid #ccc;\"></iframe>
 """
     existing = md_path.read_text(encoding="utf-8") if md_path.exists() else None
