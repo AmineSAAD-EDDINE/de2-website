@@ -18,4 +18,6 @@ Welcome to the ESIEE Data Engineering II project site for the 2025–2026 academ
 - [Project report](./projet/)
 
 Each section includes the assignment write-up, results, and embedded notebook output where available.
+
+All project assets can be found on the git repository and [the following Drive](https://drive.google.com/drive/folders/1bhM5vDJjW8ltQnGwdBHrX8KgjGMlJbI6?usp=sharing)
 ---
